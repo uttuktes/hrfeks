@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Form Evaluasi Kinerja Staff</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Card / section look */
+    body { background:#f8fafc; color:#0f172a; }
+    .card { border:1px solid #111827; border-radius:.5rem; background:#fff; overflow:hidden; }
+    .card-header { background:#111827; color:#fff; padding:.6rem .9rem; }
+    .card-sub { color:#94a3b8; font-size:.85rem; margin-top:.35rem; }
+    .card-body { padding:.8rem; }
+    .lbl-small { font-size:.90rem; color:#0f172a; }
+    .val-badge { min-width:48px; text-align:center; font-weight:600; color:#0f172a; }
+
+    /* Slider base (modern browsers) */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #4285f4 var(--pos,50%), #e6e7e9 var(--pos,50%));
+      outline: none;
+      margin: 0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #4285f4;
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      cursor: pointer;
+      margin-top: -5px; /* center thumb */
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #4285f4;
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    /* Small screen tweaks */
+    @media (max-width:640px) {
+      .card-body { padding:.6rem; }
+      .card-header { padding:.5rem .7rem; }
+      input, select { font-size:0.95rem; }
+      h1 { font-size:1.05rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="max-w-3xl mx-auto p-4 sm:p-6">
+	<img src="https://media.licdn.com/dms/image/v2/D4E3DAQHdQ8hI0F8kFw/image-scale_191_1128/image-scale_191_1128/0/1729146506484/espera_satya_cover?e=2147483647&amp;v=beta&amp;t=Li35iFgVbilg53Our-rLWfp4cdXEVmF1ZzX6mRVCLfw" alt="Espera Satya" class="w-full h-32 object-cover object-right rounded-t-lg mb-4">
+	<h1 class="text-2xl font-bold text-center mb-1">Evaluasi Performa Kinerja</h1>
+
+    <form id="formEval" class="space-y-4">
+
+      <section class="card">
+        <div class="card-header">
+          <div class="font-semibold">Data Nama Penilai</div>
+        </div>
+        <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-3">
+          <input id="departemen" name="departemen" placeholder="Departemen *" class="p-2 border rounded" required>
+          <input id="namaPenilai" name="namaPenilai" placeholder="Nama Penilai *" class="p-2 border rounded" required>
+          <input id="jabatanPenilai" name="jabatanPenilai" placeholder="Jabatan Penilai *" class="p-2 border rounded" required>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div class="font-semibold">Data Karyawan</div>
+        </div>
+        <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-3">
+          <input id="nama" name="nama" placeholder="Nama Lengkap *" class="p-2 border rounded" required>
+          <input id="posisi" name="posisi" placeholder="Posisi Pekerjaan *" class="p-2 border rounded" required>
+          <input id="tmk" name="tmk" placeholder="TMK (Tanggal Masuk Kerja)" class="p-2 border rounded">
+          <input id="pendidikan" name="pendidikan" placeholder="Pendidikan Akhir" class="p-2 border rounded">
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div class="font-semibold">Periode Evaluasi</div>
+        </div>
+        <div class="card-body grid grid-cols-1 md:grid-cols-2 gap-3">
+          <select id="periode" name="periode" class="p-2 border rounded w-full" required>
+            <option value="">Pilih Periode (CW)</option>
+            <option value="CW1">Nov - Feb</option>
+            <option value="CW2">Mar - Jul</option>
+            <option value="CW3">Agu - Des</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div class="font-semibold">KOMPETENSI</div>
+          <div class="card-sub">&gt;15 = Tinggi | 9–15 = Sedang | &lt;9 = Rendah</div>
+        </div>
+        <div class="card-body space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+            <label class="lbl-small">1. Keterampilan Kerja</label>
+            <div class="sm:col-span-1">
+              <input class="slider comp" type="range" name="comp1" min="0" max="20" value="0">
+            </div>
+            <div class="val-badge" data-for="comp1">0</div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+            <label class="lbl-small">2. Pengetahuan</label>
+            <div class="sm:col-span-1">
+              <input class="slider comp" type="range" name="comp2" min="0" max="20" value="0">
+            </div>
+            <div class="val-badge" data-for="comp2">0</div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+            <label class="lbl-small">3. Pengalaman</label>
+            <div class="sm:col-span-1">
+              <input class="slider comp" type="range" name="comp3" min="0" max="20" value="0">
+            </div>
+            <div class="val-badge" data-for="comp3">0</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div class="font-semibold">KAPASITAS</div>
+          <div class="card-sub">&gt;15 = Kuat | 9–15 = Sedang | &lt;9 = Lemah</div>
+        </div>
+        <div class="card-body space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+            <label class="lbl-small">1. Fisik</label>
+            <div class="sm:col-span-1"><input class="slider kapasitas" type="range" name="kap1" min="0" max="20" value="0"></div>
+            <div class="val-badge" data-for="kap1">0</div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+            <label class="lbl-small">2. Mental</label>
+            <div class="sm:col-span-1"><input class="slider kapasitas" type="range" name="kap2" min="0" max="20" value="0"></div>
+            <div class="val-badge" data-for="kap2">0</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div class="font-semibold">PROFESIONALISME KERJA</div>
+          <div class="card-sub">&gt;40 = Sangat Baik | 30–40 = Baik | 19–29 = Sedang | &lt;19 = Kurang</div>
+        </div>
+        <div class="card-body space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">1. Pemahaman kebijakan mutu</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p1" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p1">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">2. Pengembangan diri & peningkatan performa kerja</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p2" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p2">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">3. Perencanaan & pengendalian kualitas kerja</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p3" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p3">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">4. Pencapaian target produktivitas kinerja</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p4" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p4">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">5. Inisiatif / Gagasan baru</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p5" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p5">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">6. Tanggung jawab dalam menjalankan pekerjaan</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p6" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p6">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">7. Pendekatan interpersonal dengan tim</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p7" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p7">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">8. Komunikasi dalam tim</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p8" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p8">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">9. Target Absensi</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p9" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p9">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">10. Target Administrasi (Laporan / Deadline)</label>
+            <div class="flex items-center gap-3">
+              <input class="slider profesional" type="range" name="p10" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p10">0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div class="font-semibold">KARAKTER & KAPASITAS KERJA</div>
+          <div class="card-sub">&gt;30 = Sangat Baik | 20–30 = Baik | 9–19 = Sedang | &lt;9 = Kurang</div>
+        </div>
+        <div class="card-body space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">1. Orientasi terhadap proses & hasil kerja</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k1" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k1">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">2. Integritas (kedisiplinan, kebersihan, loyalitas)</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k2" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k2">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">3. Kontribusi terhadap strategi bisnis</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k3" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k3">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">4. Menghormati atasan & rekan kerja</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k4" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k4">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">5. Kerja sama tim</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k5" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k5">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">6. Kemampuan beradaptasi</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k6" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k6">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">7. Pemecahan masalah & ketepatan keputusan</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k7" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k7">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">8. Kedewasaan dalam bersikap</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k8" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k8">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">9. Semangat kerja & kemampuan belajar</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k9" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k9">0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <label class="lbl-small">10. Kepemimpinan</label>
+            <div class="flex items-center gap-3">
+              <input class="slider karakter" type="range" name="k10" min="0" max="40" value="0">
+              <div class="val-badge" data-for="k10">0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="text-right">
+        <button id="btnSubmit" type="submit" class="px-5 py-2 rounded bg-blue-500 text-white">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const CONFIG = {
+      kompetensi: { maxTotal: 3 * 20, weight: 20 },
+      kapasitas: { maxTotal: 2 * 20, weight: 10 },
+      profesional: { maxTotal: 10 * 50, weight: 40 },
+      karakter: { maxTotal: 10 * 40, weight: 30 }
+    };
+    const DENOM = CONFIG.kompetensi.maxTotal + CONFIG.kapasitas.maxTotal + CONFIG.profesional.maxTotal + CONFIG.karakter.maxTotal;
+
+    function setRangeVisual(r) {
+      const min = parseFloat(r.min), max = parseFloat(r.max), val = parseFloat(r.value);
+      const pct = ((val - min) / (max - min)) * 100;
+      r.style.setProperty('--pos', pct + '%');
+      const name = r.getAttribute('name');
+      const badge = document.querySelector(`.val-badge[data-for="${name}"]`);
+      if (badge) badge.textContent = String(val);
+    }
+
+    function initSliders() {
+      const sliders = document.querySelectorAll('input[type="range"].slider, input[type="range"].comp, input[type="range"].kapasitas, input[type="range"].profesional, input[type="range"].karakter');
+      sliders.forEach(s => {
+        setRangeVisual(s);
+        s.addEventListener('input', () => setRangeVisual(s));
+      });
+    }
+
+    function sumBy(selector) {
+      return Array.from(document.querySelectorAll(selector)).reduce((a, el) => a + (Number(el.value) || 0), 0);
+    }
+
+    function calcAll() {
+      const sumKom = sumBy('input.comp');
+      const sumKap = sumBy('input.kapasitas');
+      const sumProf = sumBy('input.profesional');
+      const sumKar = sumBy('input.karakter');
+
+      const pctKom = (sumKom / CONFIG.kompetensi.maxTotal) * 100;
+      const pctKap = (sumKap / CONFIG.kapasitas.maxTotal) * 100;
+      const pctProf = (sumProf / CONFIG.profesional.maxTotal) * 100;
+      const pctKar = (sumKar / CONFIG.karakter.maxTotal) * 100;
+
+      const wKom = (pctKom * CONFIG.kompetensi.weight) / 100;
+      const wKap = (pctKap * CONFIG.kapasitas.weight) / 100;
+      const wProf = (pctProf * CONFIG.profesional.weight) / 100;
+      const wKar = (pctKar * CONFIG.karakter.weight) / 100;
+
+      const totalWeightedPercent = wKom + wKap + wProf + wKar;
+      const rawSum = sumKom + sumKap + sumProf + sumKar;
+      const overallPct = (rawSum / DENOM) * 100;
+
+      let conclusion = 'Sangat Kurang';
+      if (overallPct >= 90) conclusion = 'Unggul';
+      else if (overallPct >= 80) conclusion = 'Baik';
+      else if (overallPct >= 69) conclusion = 'Perlu Pengembangan';
+      else if (overallPct >= 58) conclusion = 'Kurang';
+
+      return { sumKom, sumKap, sumProf, sumKar, pctKom, pctKap, pctProf, pctKar, wKom, wKap, wProf, wKar, totalWeightedPercent, rawSum, overallPct, conclusion };
+    }
+
+    function validateForm() {
+      const requiredIds = ['departemen','namaPenilai','jabatanPenilai','nama','posisi','periode'];
+      for (const id of requiredIds) {
+        const el = document.getElementById(id);
+        if (!el || !String(el.value).trim()) return { ok:false, msg:'Lengkapi data penilai & karyawan (nama, departemen, jabatan, posisi, periode).' };
+      }
+      const allSliders = document.querySelectorAll('input[type="range"].slider, input[type="range"].comp, input[type="range"].kapasitas, input[type="range"].profesional, input[type="range"].karakter');
+      for (const s of allSliders) {
+        const min = Number(s.min || 0), max = Number(s.max || 0), val = Number(s.value || 0);
+        if (isNaN(val) || val < min || val > max) return { ok:false, msg:`Nilai ${s.name} harus antara ${min} - ${max}.` };
+      }
+      return { ok:true };
+    }
+
+    const GAS_URL = 'GAS_WEBAPP_URL';
+    document.addEventListener('DOMContentLoaded', () => {
+      initSliders();
+
+      document.getElementById('formEval').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const v = validateForm();
+        if (!v.ok) { alert(v.msg); return; }
+
+        const calc = calcAll();
+        const fd = new FormData(this);
+        fd.append('sumKom', calc.sumKom);
+        fd.append('sumKap', calc.sumKap);
+        fd.append('sumProf', calc.sumProf);
+        fd.append('sumKar', calc.sumKar);
+        fd.append('overallPct', calc.overallPct.toFixed(2));
+        fd.append('conclusion', calc.conclusion);
+        fd.append('weightedPercent', calc.totalWeightedPercent.toFixed(2));
+        fd.append('detail', JSON.stringify({
+          pctKom: calc.pctKom, pctKap: calc.pctKap, pctProf: calc.pctProf, pctKar: calc.pctKar,
+          wKom: calc.wKom, wKap: calc.wKap, wProf: calc.wProf, wKar: calc.wKar
+        }));
+
+        const btn = document.getElementById('btnSubmit');
+        const orig = btn.innerText;
+        btn.disabled = true;
+        btn.innerText = 'Mengirim...';
+
+        try {
+          const res = await fetch(GAS_URL, { method:'POST', body: fd });
+          if (res.ok) {
+            alert('Data berhasil dikirim ke server.');
+          } else {
+            const txt = await res.text().catch(()=>res.statusText);
+            alert('❌ Gagal mengirim: ' + (txt || res.status));
+          }
+        } catch (err) {
+          alert('❌ Error saat mengirim: ' + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerText = orig;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
