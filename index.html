@@ -75,6 +75,15 @@
       background: #3b82f6;
       box-shadow: 0 0 0 2px #10b981;
     }
+
+    /* Animasi loading */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .loading-pulse {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
   </style>
 </head>
 <body>
@@ -108,7 +117,6 @@
             <option value="">Pilih Nama Penilai *</option>
           </select>
           <input id="departemen" name="departemen" placeholder="Departemen *" class="p-2 border rounded bg-gray-100" readonly required>
-          <input id="jabatanPenilai" name="jabatanPenilai" placeholder="Jabatan Penilai *" class="p-2 border rounded bg-gray-100" readonly required>
         </div>
       </section>
 
@@ -123,6 +131,18 @@
           </div>
         </div>
         <div class="card-body">
+          <!-- AREA LOADING - Hanya muncul saat fetching data -->
+          <div id="loadingKaryawan" class="hidden flex flex-col items-center justify-center py-10">
+            <div class="flex items-center gap-3 text-blue-600 font-medium text-lg loading-pulse">
+              <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Loading data karyawan...</span>
+            </div>
+         
+          </div>
+
           <div id="sectionKaryawan" class="hidden">
             <div class="swiper mySwiper">
               <div class="swiper-wrapper" id="swiperKaryawan"></div>
@@ -349,7 +369,7 @@
   </div>
 
   <script>
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwI_U-pP4zMr21Www7cYQelj7sBfPTMkV_QPKdFSko78n4fdm5Q8hNaZAt3t511xYT7/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxEE4-FcHehbFQ98XfmFTHsziah2XGZUaQJhhAN3e40Qq_JP_0Fb8kozQ6VURzpBW3y/exec';
     
     // ============ STATE MANAGEMENT ============
     let swiperInstance = null;
@@ -403,37 +423,67 @@
       });
     }
 
-    // ============ LOAD KARYAWAN ============
+    // ============ LOAD KARYAWAN DENGAN LOADING REAL ============
     async function loadKaryawanByDept(dept) {
       if (!dept) return;
+
+      const wrapper = document.getElementById('swiperKaryawan');
+      const section = document.getElementById('sectionKaryawan');
+      const noMessage = document.getElementById('noKaryawanMessage');
+      const loadingEl = document.getElementById('loadingKaryawan');
+      const counter = document.getElementById('karyawanCounter');
       
-      const data = await fetchFromGAS('getKaryawanByDept', { departemen: dept });
-      currentKaryawanList = data;
+      // 1. TAMPILKAN LOADING - sembunyikan yang lain
+      section.classList.add('hidden');
+      noMessage.classList.add('hidden');
+      loadingEl.classList.remove('hidden');
+      wrapper.innerHTML = ''; // kosongkan wrapper
+      counter.textContent = '0 karyawan';
+      document.getElementById('karyawanIndicator').innerHTML = ''; // kosongkan indicator
       
-      // Inisialisasi state untuk setiap karyawan dengan nilai 0
-      data.forEach((karyawan, index) => {
-        const key = karyawan.nama;
-        if (!penilaianState[key]) {
-          penilaianState[key] = {};
-          SLIDER_NAMES.forEach(slider => {
-            penilaianState[key][slider] = 0;
-          });
+      // 2. FETCH DATA - loading akan tetap tampil selama proses ini berlangsung
+      try {
+        const data = await fetchFromGAS('getKaryawanByDept', { departemen: dept });
+        
+        // 3. DATA TERIMA - LANGSUNG HILANGKAN LOADING
+        loadingEl.classList.add('hidden');
+        
+        // 4. Update data
+        currentKaryawanList = data;
+
+        data.forEach((karyawan) => {
+          const key = karyawan.nama;
+          if (!penilaianState[key]) {
+            penilaianState[key] = {};
+            SLIDER_NAMES.forEach(slider => {
+              penilaianState[key][slider] = 0;
+            });
+          }
+        });
+
+        if (data.length > 0) {
+          renderKaryawanSlides();
+          renderKaryawanIndicator();
+          
+          document.getElementById('currentKaryawanIndex').value = 0;
+          resetAllSlidersToZero();
+          loadPenilaianForKaryawan(0);
+          updateActiveKaryawan(0);
+        } else {
+          // Tidak ada karyawan
+          noMessage.classList.remove('hidden');
+          noMessage.textContent = 'Tidak ada karyawan di departemen ini';
+          section.classList.add('hidden');
+          counter.textContent = '0 karyawan';
         }
-      });
-      
-      renderKaryawanSlides();
-      renderKaryawanIndicator();
-      
-      if (data.length > 0) {
-        // Set karyawan pertama sebagai active
-        document.getElementById('currentKaryawanIndex').value = 0;
-        
-        // ⚠️ RESET SLIDER KE 0 DULU SEBELUM LOAD KARYAWAN PERTAMA
-        resetAllSlidersToZero();
-        
-        // Load nilai karyawan pertama (pasti 0 karena baru diinisialisasi)
-        loadPenilaianForKaryawan(0);
-        updateActiveKaryawan(0);
+
+      } catch (error) {
+        // 5. ERROR - loading hilang, tampilkan pesan error
+        loadingEl.classList.add('hidden');
+        noMessage.classList.remove('hidden');
+        noMessage.innerHTML = '❌ Gagal memuat data karyawan. <br> Silakan coba lagi.';
+        section.classList.add('hidden');
+        console.error(error);
       }
     }
 
@@ -485,7 +535,6 @@
         slidesPerView: 1,
         spaceBetween: 10,
         pagination: {
-          el: '.swiper-pagination',
           clickable: true
         },
         on: {
@@ -493,16 +542,12 @@
             const index = this.realIndex;
             document.getElementById('currentKaryawanIndex').value = index;
             
-            // ⚠️ SIMPAN dulu nilai karyawan SEBELUMNYA
             const previousIndex = this.previousIndex;
             if (previousIndex >= 0 && previousIndex < currentKaryawanList.length) {
               savePenilaianForKaryawan(previousIndex);
             }
             
-            // ⚠️ RESET slider ke 0 DULU
             resetAllSlidersToZero();
-            
-            // ⚠️ BARU LOAD nilai karyawan BARU (jika sudah pernah diisi)
             loadPenilaianForKaryawan(index);
             updateActiveKaryawan(index);
           }
@@ -535,7 +580,6 @@
 
     // ============ UPDATE ACTIVE KARYAWAN ============
     function updateActiveKaryawan(index) {
-      // Update card active
       document.querySelectorAll('.karyawan-card').forEach((card, i) => {
         if (i === index) {
           card.classList.add('bg-blue-50', 'border-blue-500', 'border-2');
@@ -544,14 +588,12 @@
         }
       });
       
-      // Update hidden inputs
       const karyawan = currentKaryawanList[index];
       if (karyawan) {
         document.getElementById('nama').value = karyawan.nama;
         document.getElementById('posisi').value = karyawan.jabatan;
       }
       
-      // Update indicator
       renderKaryawanIndicator();
     }
 
@@ -563,7 +605,6 @@
       const key = karyawan.nama;
       const nilai = penilaianState[key] || {};
       
-      // Set slider sesuai nilai yang tersimpan (default 0)
       SLIDER_NAMES.forEach(sliderName => {
         const slider = document.querySelector(`input[name="${sliderName}"]`);
         if (slider) {
@@ -585,7 +626,6 @@
         penilaianState[key] = {};
       }
       
-      // Simpan semua nilai slider
       SLIDER_NAMES.forEach(sliderName => {
         const slider = document.querySelector(`input[name="${sliderName}"]`);
         if (slider) {
@@ -593,7 +633,6 @@
         }
       });
       
-      // Update indicator dan badge
       renderKaryawanIndicator();
       updateKaryawanBadge(index);
     }
@@ -636,7 +675,6 @@
         r.addEventListener('input', function() {
           setRangeVisual(r);
           
-          // Auto save saat slider digerakkan
           const currentIndex = parseInt(document.getElementById('currentKaryawanIndex').value);
           if (currentIndex >= 0 && currentKaryawanList[currentIndex]) {
             const karyawan = currentKaryawanList[currentIndex];
@@ -648,7 +686,6 @@
             
             penilaianState[key][r.name] = parseInt(r.value) || 0;
             
-            // Update indicator dan badge
             renderKaryawanIndicator();
             updateKaryawanBadge(currentIndex);
           }
@@ -728,7 +765,6 @@
       const opt = e.target.selectedOptions[0];
       const dept = opt?.dataset.departemen || '';
       document.getElementById('departemen').value = dept;
-      document.getElementById('jabatanPenilai').value = opt?.dataset.jabatan || '';
       
       // Reset state
       penilaianState = {};
@@ -743,6 +779,8 @@
       if (dept) {
         await loadKaryawanByDept(dept);
       } else {
+        // Sembunyikan loading jika tidak ada departemen
+        document.getElementById('loadingKaryawan').classList.add('hidden');
         document.getElementById('sectionKaryawan').classList.add('hidden');
         document.getElementById('noKaryawanMessage').classList.remove('hidden');
         document.getElementById('noKaryawanMessage').textContent = 'Pilih penilai terlebih dahulu';
@@ -761,7 +799,6 @@
       document.getElementById('formEval').addEventListener('submit', async e => {
         e.preventDefault();
         
-        // Simpan nilai karyawan yang sedang aktif
         const currentIndex = parseInt(document.getElementById('currentKaryawanIndex').value);
         if (currentIndex >= 0) {
           savePenilaianForKaryawan(currentIndex);
@@ -770,7 +807,6 @@
         const v = validateForm();
         if (!v.ok) return alert(v.msg);
 
-        // Ambil karyawan yang sedang aktif
         const karyawan = currentKaryawanList[currentIndex];
         
         if (!karyawan) {
@@ -782,7 +818,7 @@
         const payload = {
           departemen: document.getElementById('departemen').value,
           namaPenilai: document.getElementById('namaPenilai').value,
-          jabatanPenilai: document.getElementById('jabatanPenilai').value,
+          jabatanPenilai: document.getElementById('jabatanPenilai')?.value || '',
           nama: karyawan.nama,
           posisi: karyawan.jabatan,
           periode: document.getElementById('periode').value,
@@ -807,9 +843,8 @@
           const json = await res.json();
           
           if (json.success) {
-            alert(`✅ Penilaian untuk ${karyawan.nama} berhasil disimpan`);
+            alert(`Penilaian untuk ${karyawan.nama} berhasil`);
             
-            // Hapus karyawan dari list atau lanjut ke berikutnya
             if (currentIndex + 1 < currentKaryawanList.length) {
               swiperInstance.slideTo(currentIndex + 1);
             } else {
@@ -831,4 +866,3 @@
   </script>
 </body>
 </html>
-
