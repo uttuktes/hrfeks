@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Form Evaluasi Kinerja Staf</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
   <style>
     body { background:#f8fafc; color:#0f172a; }
     .card { border:1px solid #111827; border-radius:.5rem; background:#fff; overflow:hidden; }
@@ -44,57 +47,98 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.2);
       cursor: pointer;
     }
+    
+    .swiper-slide-active .karyawan-card {
+      background-color: #eff6ff;
+      border-color: #3b82f6;
+      border-width: 2px;
+    }
 
-    @media (max-width:640px) {
-      .card-body { padding:.6rem; }
-      .card-header { padding:.5rem .7rem; }
-      input, select { font-size:0.95rem; }
-      h1 { font-size:1.05rem; }
+    .karyawan-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #94a3b8;
+      margin: 0 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .karyawan-indicator.active {
+      background: #3b82f6;
+      transform: scale(1.2);
+    }
+    .karyawan-indicator.filled {
+      background: #10b981;
+    }
+    .karyawan-indicator.active.filled {
+      background: #3b82f6;
+      box-shadow: 0 0 0 2px #10b981;
     }
   </style>
 </head>
 <body>
   <div class="max-w-3xl mx-auto p-4 sm:p-6">
-	<img src="https://media.licdn.com/dms/image/v2/D4E3DAQHdQ8hI0F8kFw/image-scale_191_1128/image-scale_191_1128/0/1729146506484/espera_satya_cover?e=2147483647&amp;v=beta&amp;t=Li35iFgVbilg53Our-rLWfp4cdXEVmF1ZzX6mRVCLfw" alt="Espera Satya" class="w-full h-32 object-cover object-right rounded-t-lg mb-4">
-	<h1 class="text-2xl font-bold text-center mb-1">Evaluasi Performa Kinerja</h1>
+    <img src="https://media.licdn.com/dms/image/v2/D4E3DAQHdQ8hI0F8kFw/image-scale_191_1128/image-scale_191_1128/0/1729146506484/espera_satya_cover?e=2147483647&amp;v=beta&amp;t=Li35iFgVbilg53Our-rLWfp4cdXEVmF1ZzX6mRVCLfw" alt="Espera Satya" class="w-full h-32 object-cover object-right rounded-t-lg mb-4">
+    <h1 class="text-2xl font-bold text-center mb-1">Evaluasi Performa Kinerja</h1>
 
     <form id="formEval" class="space-y-4">
+      <!-- PERIODE EVALUASI -->
+      <section class="card">
+        <div class="card-header">
+          <div class="font-semibold">Periode Evaluasi</div>
+        </div>
+        <div class="card-body">
+          <select id="periode" name="periode" class="p-2 border rounded w-full md:w-1/2" required>
+            <option value="">Pilih Periode Evaluasi *</option>
+            <option value="CW1">CW1: November - Februari</option>
+            <option value="CW2">CW2: Maret - Juli</option>
+            <option value="CW3">CW3: Agustus - Desember</option>
+          </select>
+        </div>
+      </section>
 
+      <!-- DATA PENILAI -->
       <section class="card">
         <div class="card-header">
           <div class="font-semibold">Data Nama Penilai</div>
         </div>
         <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-3">
-          <input id="departemen" name="departemen" placeholder="Departemen *" class="p-2 border rounded" required>
-          <input id="namaPenilai" name="namaPenilai" placeholder="Nama Penilai *" class="p-2 border rounded" required>
-          <input id="jabatanPenilai" name="jabatanPenilai" placeholder="Jabatan Penilai *" class="p-2 border rounded" required>
+          <select id="namaPenilai" name="namaPenilai" class="p-2 border rounded" required>
+            <option value="">Pilih Nama Penilai *</option>
+          </select>
+          <input id="departemen" name="departemen" placeholder="Departemen *" class="p-2 border rounded bg-gray-100" readonly required>
+          <input id="jabatanPenilai" name="jabatanPenilai" placeholder="Jabatan Penilai *" class="p-2 border rounded bg-gray-100" readonly required>
         </div>
       </section>
 
+      <!-- DATA KARYAWAN DENGAN INDICATOR -->
       <section class="card">
         <div class="card-header">
           <div class="font-semibold">Data Karyawan</div>
+          <div class="card-sub flex items-center gap-2" id="karyawanStatus">
+            <span id="karyawanCounter">0 karyawan</span>
+            <span class="mx-2">|</span>
+            <span id="karyawanIndicator" class="flex gap-1"></span>
+          </div>
         </div>
-        <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-3">
-          <input id="nama" name="nama" placeholder="Nama Lengkap *" class="p-2 border rounded" required>
-          <input id="posisi" name="posisi" placeholder="Posisi Pekerjaan *" class="p-2 border rounded" required>
+        <div class="card-body">
+          <div id="sectionKaryawan" class="hidden">
+            <div class="swiper mySwiper">
+              <div class="swiper-wrapper" id="swiperKaryawan"></div>
+              <div class="swiper-pagination mt-4"></div>
+            </div>
+          </div>
+          <div id="noKaryawanMessage" class="hidden text-center py-8 text-gray-500">
+            Tidak ada karyawan di departemen ini
+          </div>
         </div>
+        <input type="hidden" id="currentKaryawanIndex" value="-1">
+        <input type="hidden" id="nama" name="nama">
+        <input type="hidden" id="posisi" name="posisi">
       </section>
 
-      <section class="card">
-        <div class="card-header">
-          <div class="font-semibold">Periode Evaluasi</div>
-        </div>
-        <div class="card-body grid grid-cols-1 md:grid-cols-2 gap-3">
-          <select id="periode" name="periode" class="p-2 border rounded w-full" required>
-            <option value="">Pilih Periode (CW)</option>
-            <option value="CW1">Nov - Feb</option>
-            <option value="CW2">Mar - Jul</option>
-            <option value="CW3">Agu - Des</option>
-          </select>
-        </div>
-      </section>
-
+      <!-- KOMPETENSI -->
       <section class="card">
         <div class="card-header">
           <div class="font-semibold">KOMPETENSI</div>
@@ -104,29 +148,28 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">1. Keterampilan Kerja</label>
             <div class="sm:col-span-1">
-              <input class="slider comp" type="range" name="comp1" min="0" max="20" value="0">
+              <input class="slider kompetensi" type="range" name="comp1" min="0" max="20" value="0">
             </div>
             <div class="val-badge" data-for="comp1">0</div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">2. Pengetahuan</label>
             <div class="sm:col-span-1">
-              <input class="slider comp" type="range" name="comp2" min="0" max="20" value="0">
+              <input class="slider kompetensi" type="range" name="comp2" min="0" max="20" value="0">
             </div>
             <div class="val-badge" data-for="comp2">0</div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">3. Pengalaman</label>
             <div class="sm:col-span-1">
-              <input class="slider comp" type="range" name="comp3" min="0" max="20" value="0">
+              <input class="slider kompetensi" type="range" name="comp3" min="0" max="20" value="0">
             </div>
             <div class="val-badge" data-for="comp3">0</div>
           </div>
         </div>
       </section>
 
+      <!-- KAPASITAS -->
       <section class="card">
         <div class="card-header">
           <div class="font-semibold">KAPASITAS</div>
@@ -138,7 +181,6 @@
             <div class="sm:col-span-1"><input class="slider kapasitas" type="range" name="kap1" min="0" max="20" value="0"></div>
             <div class="val-badge" data-for="kap1">0</div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">2. Mental</label>
             <div class="sm:col-span-1"><input class="slider kapasitas" type="range" name="kap2" min="0" max="20" value="0"></div>
@@ -147,6 +189,7 @@
         </div>
       </section>
 
+      <!-- PROFESIONALISME -->
       <section class="card">
         <div class="card-header">
           <div class="font-semibold">PROFESIONALISME KERJA</div>
@@ -160,7 +203,6 @@
               <div class="val-badge" data-for="p1">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">2. Pengembangan diri & peningkatan performa kerja</label>
             <div class="flex items-center gap-3">
@@ -168,7 +210,6 @@
               <div class="val-badge" data-for="p2">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">3. Perencanaan & pengendalian kualitas kerja</label>
             <div class="flex items-center gap-3">
@@ -176,7 +217,6 @@
               <div class="val-badge" data-for="p3">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">4. Pencapaian target produktivitas kinerja</label>
             <div class="flex items-center gap-3">
@@ -184,7 +224,6 @@
               <div class="val-badge" data-for="p4">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">5. Inisiatif / Gagasan baru</label>
             <div class="flex items-center gap-3">
@@ -192,7 +231,6 @@
               <div class="val-badge" data-for="p5">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">6. Tanggung jawab dalam menjalankan pekerjaan</label>
             <div class="flex items-center gap-3">
@@ -200,7 +238,6 @@
               <div class="val-badge" data-for="p6">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">7. Pendekatan interpersonal dengan tim</label>
             <div class="flex items-center gap-3">
@@ -208,7 +245,6 @@
               <div class="val-badge" data-for="p7">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">8. Komunikasi dalam tim</label>
             <div class="flex items-center gap-3">
@@ -216,18 +252,17 @@
               <div class="val-badge" data-for="p8">0</div>
             </div>
           </div>
-
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">9. Target Administrasi (Laporan / Deadline)</label>
             <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p10" min="0" max="50" value="0">
-              <div class="val-badge" data-for="p10">0</div>
+              <input class="slider profesional" type="range" name="p9" min="0" max="50" value="0">
+              <div class="val-badge" data-for="p9">0</div>
             </div>
           </div>
         </div>
       </section>
 
+      <!-- KARAKTER -->
       <section class="card">
         <div class="card-header">
           <div class="font-semibold">KARAKTER & KAPASITAS KERJA</div>
@@ -241,7 +276,6 @@
               <div class="val-badge" data-for="k1">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">2. Integritas (kedisiplinan, kebersihan, loyalitas)</label>
             <div class="flex items-center gap-3">
@@ -249,7 +283,6 @@
               <div class="val-badge" data-for="k2">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">3. Kontribusi terhadap strategi bisnis</label>
             <div class="flex items-center gap-3">
@@ -257,7 +290,6 @@
               <div class="val-badge" data-for="k3">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">4. Menghormati atasan & rekan kerja</label>
             <div class="flex items-center gap-3">
@@ -265,7 +297,6 @@
               <div class="val-badge" data-for="k4">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">5. Kerja sama tim</label>
             <div class="flex items-center gap-3">
@@ -273,7 +304,6 @@
               <div class="val-badge" data-for="k5">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">6. Kemampuan beradaptasi</label>
             <div class="flex items-center gap-3">
@@ -281,7 +311,6 @@
               <div class="val-badge" data-for="k6">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">7. Pemecahan masalah & ketepatan keputusan</label>
             <div class="flex items-center gap-3">
@@ -289,7 +318,6 @@
               <div class="val-badge" data-for="k7">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">8. Kedewasaan dalam bersikap</label>
             <div class="flex items-center gap-3">
@@ -297,7 +325,6 @@
               <div class="val-badge" data-for="k8">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">9. Semangat kerja & kemampuan belajar</label>
             <div class="flex items-center gap-3">
@@ -305,7 +332,6 @@
               <div class="val-badge" data-for="k9">0</div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <label class="lbl-small">10. Kepemimpinan</label>
             <div class="flex items-center gap-3">
@@ -317,133 +343,491 @@
       </section>
 
       <div class="text-right">
-        <button id="btnSubmit" type="submit" class="px-5 py-2 rounded bg-blue-500 text-white">Submit</button>
+        <button id="btnSubmit" type="submit" class="px-5 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 disabled:bg-gray-400" disabled>Submit</button>
       </div>
     </form>
   </div>
 
   <script>
-    const CONFIG = {
-      kompetensi: { maxTotal: 3 * 20, weight: 20 },
-      kapasitas: { maxTotal: 2 * 20, weight: 10 },
-      profesional: { maxTotal: 10 * 50, weight: 40 },
-      karakter: { maxTotal: 10 * 40, weight: 30 }
-    };
-    const DENOM = CONFIG.kompetensi.maxTotal + CONFIG.kapasitas.maxTotal + CONFIG.profesional.maxTotal + CONFIG.karakter.maxTotal;
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwI_U-pP4zMr21Www7cYQelj7sBfPTMkV_QPKdFSko78n4fdm5Q8hNaZAt3t511xYT7/exec';
+    
+    // ============ STATE MANAGEMENT ============
+    let swiperInstance = null;
+    let currentKaryawanList = [];
+    let penilaianState = {}; // Menyimpan nilai slider per karyawan
+    
+    // Daftar semua slider
+    const SLIDER_NAMES = [
+      'comp1', 'comp2', 'comp3',
+      'kap1', 'kap2',
+      'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9',
+      'k1', 'k2', 'k3', 'k4', 'k5', 'k6', 'k7', 'k8', 'k9', 'k10'
+    ];
 
-    function setRangeVisual(r) {
-      const min = parseFloat(r.min), max = parseFloat(r.max), val = parseFloat(r.value);
-      const pct = ((val - min) / (max - min)) * 100;
-      r.style.setProperty('--pos', pct + '%');
-      const name = r.getAttribute('name');
-      const badge = document.querySelector(`.val-badge[data-for="${name}"]`);
-      if (badge) badge.textContent = String(val);
+    // ============ FETCH ============
+    async function fetchFromGAS(action, params = {}) {
+      const url = new URL(GAS_URL);
+      url.searchParams.set('action', action);
+      Object.keys(params).forEach(k => url.searchParams.set(k, params[k]));
+      
+      const res = await fetch(url);
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Error fetch');
+      return json.data;
     }
 
-    function initSliders() {
-      const sliders = document.querySelectorAll('input[type="range"].slider, input[type="range"].comp, input[type="range"].kapasitas, input[type="range"].profesional, input[type="range"].karakter');
-      sliders.forEach(s => {
-        setRangeVisual(s);
-        s.addEventListener('input', () => setRangeVisual(s));
+    // ============ LOAD PENILAI ============
+    async function loadPenilai() {
+      const data = await fetchFromGAS('getAllPenilai');
+      const select = document.getElementById('namaPenilai');
+      select.innerHTML = `<option value="">Pilih Nama Penilai *</option>`;
+      
+      data.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r.nama;
+        opt.textContent = r.nama;
+        opt.dataset.departemen = r.departemen;
+        opt.dataset.jabatan = r.jabatan;
+        select.appendChild(opt);
       });
     }
 
-    function sumBy(selector) {
-      return Array.from(document.querySelectorAll(selector)).reduce((a, el) => a + (Number(el.value) || 0), 0);
+    // ============ RESET SEMUA SLIDER KE 0 ============
+    function resetAllSlidersToZero() {
+      SLIDER_NAMES.forEach(sliderName => {
+        const slider = document.querySelector(`input[name="${sliderName}"]`);
+        if (slider) {
+          slider.value = 0;
+          setRangeVisual(slider);
+        }
+      });
     }
 
+    // ============ LOAD KARYAWAN ============
+    async function loadKaryawanByDept(dept) {
+      if (!dept) return;
+      
+      const data = await fetchFromGAS('getKaryawanByDept', { departemen: dept });
+      currentKaryawanList = data;
+      
+      // Inisialisasi state untuk setiap karyawan dengan nilai 0
+      data.forEach((karyawan, index) => {
+        const key = karyawan.nama;
+        if (!penilaianState[key]) {
+          penilaianState[key] = {};
+          SLIDER_NAMES.forEach(slider => {
+            penilaianState[key][slider] = 0;
+          });
+        }
+      });
+      
+      renderKaryawanSlides();
+      renderKaryawanIndicator();
+      
+      if (data.length > 0) {
+        // Set karyawan pertama sebagai active
+        document.getElementById('currentKaryawanIndex').value = 0;
+        
+        // ⚠️ RESET SLIDER KE 0 DULU SEBELUM LOAD KARYAWAN PERTAMA
+        resetAllSlidersToZero();
+        
+        // Load nilai karyawan pertama (pasti 0 karena baru diinisialisasi)
+        loadPenilaianForKaryawan(0);
+        updateActiveKaryawan(0);
+      }
+    }
+
+    // ============ RENDER SLIDE KARYAWAN ============
+    function renderKaryawanSlides() {
+      const wrapper = document.getElementById('swiperKaryawan');
+      const section = document.getElementById('sectionKaryawan');
+      const noMessage = document.getElementById('noKaryawanMessage');
+      const counter = document.getElementById('karyawanCounter');
+      
+      wrapper.innerHTML = '';
+
+      if (currentKaryawanList.length === 0) {
+        section.classList.add('hidden');
+        noMessage.classList.remove('hidden');
+        counter.textContent = '0 karyawan';
+        document.getElementById('btnSubmit').disabled = true;
+        return;
+      }
+
+      noMessage.classList.add('hidden');
+      section.classList.remove('hidden');
+      counter.textContent = `${currentKaryawanList.length} karyawan`;
+      
+      currentKaryawanList.forEach((k, index) => {
+        const key = k.nama;
+        const isFilled = penilaianState[key] && Object.values(penilaianState[key]).some(v => v > 0);
+        
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.innerHTML = `
+          <div class="border rounded p-4 shadow text-center cursor-pointer hover:bg-gray-50 transition karyawan-card relative ${index === 0 ? 'bg-blue-50 border-blue-500 border-2' : ''}"
+               data-nama="${k.nama}"
+               data-jabatan="${k.jabatan}"
+               data-index="${index}">
+            <div class="font-semibold text-lg">${k.nama}</div>
+            <div class="text-sm text-gray-500">${k.jabatan}</div>
+            ${isFilled ? '<span class="absolute top-2 right-2 text-xs bg-green-500 text-white px-2 py-1 rounded-full">✓</span>' : ''}
+          </div>
+        `;
+        
+        wrapper.appendChild(slide);
+      });
+
+      // Inisialisasi Swiper
+      if (swiperInstance) swiperInstance.destroy(true, true);
+      
+      swiperInstance = new Swiper('.mySwiper', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
+        on: {
+          slideChange: function() {
+            const index = this.realIndex;
+            document.getElementById('currentKaryawanIndex').value = index;
+            
+            // ⚠️ SIMPAN dulu nilai karyawan SEBELUMNYA
+            const previousIndex = this.previousIndex;
+            if (previousIndex >= 0 && previousIndex < currentKaryawanList.length) {
+              savePenilaianForKaryawan(previousIndex);
+            }
+            
+            // ⚠️ RESET slider ke 0 DULU
+            resetAllSlidersToZero();
+            
+            // ⚠️ BARU LOAD nilai karyawan BARU (jika sudah pernah diisi)
+            loadPenilaianForKaryawan(index);
+            updateActiveKaryawan(index);
+          }
+        }
+      });
+    }
+
+    // ============ RENDER INDICATOR ============
+    function renderKaryawanIndicator() {
+      const container = document.getElementById('karyawanIndicator');
+      container.innerHTML = '';
+      
+      currentKaryawanList.forEach((k, index) => {
+        const key = k.nama;
+        const isFilled = penilaianState[key] && Object.values(penilaianState[key]).some(v => v > 0);
+        const isActive = index === parseInt(document.getElementById('currentKaryawanIndex').value);
+        
+        const indicator = document.createElement('span');
+        indicator.className = `karyawan-indicator ${isActive ? 'active' : ''} ${isFilled ? 'filled' : ''}`;
+        indicator.setAttribute('data-index', index);
+        indicator.setAttribute('title', `${k.nama} - ${isFilled ? 'Sudah dinilai' : 'Belum dinilai'}`);
+        
+        indicator.addEventListener('click', () => {
+          if (swiperInstance) swiperInstance.slideTo(index);
+        });
+        
+        container.appendChild(indicator);
+      });
+    }
+
+    // ============ UPDATE ACTIVE KARYAWAN ============
+    function updateActiveKaryawan(index) {
+      // Update card active
+      document.querySelectorAll('.karyawan-card').forEach((card, i) => {
+        if (i === index) {
+          card.classList.add('bg-blue-50', 'border-blue-500', 'border-2');
+        } else {
+          card.classList.remove('bg-blue-50', 'border-blue-500', 'border-2');
+        }
+      });
+      
+      // Update hidden inputs
+      const karyawan = currentKaryawanList[index];
+      if (karyawan) {
+        document.getElementById('nama').value = karyawan.nama;
+        document.getElementById('posisi').value = karyawan.jabatan;
+      }
+      
+      // Update indicator
+      renderKaryawanIndicator();
+    }
+
+    // ============ LOAD PENILAIAN UNTUK KARYAWAN ============
+    function loadPenilaianForKaryawan(index) {
+      if (!currentKaryawanList.length || index >= currentKaryawanList.length) return;
+      
+      const karyawan = currentKaryawanList[index];
+      const key = karyawan.nama;
+      const nilai = penilaianState[key] || {};
+      
+      // Set slider sesuai nilai yang tersimpan (default 0)
+      SLIDER_NAMES.forEach(sliderName => {
+        const slider = document.querySelector(`input[name="${sliderName}"]`);
+        if (slider) {
+          const savedValue = nilai[sliderName] || 0;
+          slider.value = savedValue;
+          setRangeVisual(slider);
+        }
+      });
+    }
+
+    // ============ SIMPAN PENILAIAN UNTUK SATU KARYAWAN ============
+    function savePenilaianForKaryawan(index) {
+      if (!currentKaryawanList.length || index >= currentKaryawanList.length) return;
+      
+      const karyawan = currentKaryawanList[index];
+      const key = karyawan.nama;
+      
+      if (!penilaianState[key]) {
+        penilaianState[key] = {};
+      }
+      
+      // Simpan semua nilai slider
+      SLIDER_NAMES.forEach(sliderName => {
+        const slider = document.querySelector(`input[name="${sliderName}"]`);
+        if (slider) {
+          penilaianState[key][sliderName] = parseInt(slider.value) || 0;
+        }
+      });
+      
+      // Update indicator dan badge
+      renderKaryawanIndicator();
+      updateKaryawanBadge(index);
+    }
+
+    // ============ UPDATE BADGE KARYAWAN ============
+    function updateKaryawanBadge(index) {
+      const karyawan = currentKaryawanList[index];
+      if (!karyawan) return;
+      
+      const key = karyawan.nama;
+      const isFilled = penilaianState[key] && Object.values(penilaianState[key]).some(v => v > 0);
+      
+      const card = document.querySelector(`.karyawan-card[data-index="${index}"]`);
+      if (card) {
+        const existingBadge = card.querySelector('.badge-dinilai');
+        if (isFilled) {
+          if (!existingBadge) {
+            const badge = document.createElement('span');
+            badge.className = 'badge-dinilai absolute top-2 right-2 text-xs bg-green-500 text-white px-2 py-1 rounded-full';
+            badge.textContent = '✓';
+            card.appendChild(badge);
+          }
+        } else {
+          if (existingBadge) existingBadge.remove();
+        }
+      }
+    }
+
+    // ============ SLIDER VISUAL ============
+    function setRangeVisual(r) {
+      const pct = ((r.value - r.min) / (r.max - r.min)) * 100;
+      r.style.setProperty('--pos', pct + '%');
+      const badge = document.querySelector(`.val-badge[data-for="${r.name}"]`);
+      if (badge) badge.textContent = r.value;
+    }
+
+    function initSliders() {
+      document.querySelectorAll('input[type="range"]').forEach(r => {
+        setRangeVisual(r);
+        r.addEventListener('input', function() {
+          setRangeVisual(r);
+          
+          // Auto save saat slider digerakkan
+          const currentIndex = parseInt(document.getElementById('currentKaryawanIndex').value);
+          if (currentIndex >= 0 && currentKaryawanList[currentIndex]) {
+            const karyawan = currentKaryawanList[currentIndex];
+            const key = karyawan.nama;
+            
+            if (!penilaianState[key]) {
+              penilaianState[key] = {};
+            }
+            
+            penilaianState[key][r.name] = parseInt(r.value) || 0;
+            
+            // Update indicator dan badge
+            renderKaryawanIndicator();
+            updateKaryawanBadge(currentIndex);
+          }
+        });
+      });
+    }
+
+    // ============ VALIDASI & SUBMIT ============
+    function validateForm() {
+      if (!document.getElementById('periode').value) return { ok: false, msg: 'Pilih periode evaluasi' };
+      if (!document.getElementById('namaPenilai').value) return { ok: false, msg: 'Pilih nama penilai' };
+      if (!document.getElementById('nama').value) return { ok: false, msg: 'Pilih karyawan yang dinilai' };
+      return { ok: true };
+    }
+
+    // ============ CALCULATIONS ============
+    const CONFIG = {
+      kompetensi: { maxTotal: 3 * 20, weight: 20 },
+      kapasitas: { maxTotal: 2 * 20, weight: 10 },
+      profesional: { maxTotal: 9 * 50, weight: 40 },
+      karakter: { maxTotal: 10 * 40, weight: 30 }
+    };
+    const DENOM = CONFIG.kompetensi.maxTotal + CONFIG.kapasitas.maxTotal +
+                  CONFIG.profesional.maxTotal + CONFIG.karakter.maxTotal;
+
+    function sumBy(cls) { 
+      return [...document.querySelectorAll(`input.${cls}`)].reduce((a,e)=>a+(+e.value||0),0); 
+    }
+    
     function calcAll() {
-      const sumKom = sumBy('input.comp');
-      const sumKap = sumBy('input.kapasitas');
-      const sumProf = sumBy('input.profesional');
-      const sumKar = sumBy('input.karakter');
-
-      const pctKom = (sumKom / CONFIG.kompetensi.maxTotal) * 100;
-      const pctKap = (sumKap / CONFIG.kapasitas.maxTotal) * 100;
-      const pctProf = (sumProf / CONFIG.profesional.maxTotal) * 100;
-      const pctKar = (sumKar / CONFIG.karakter.maxTotal) * 100;
-
-      const wKom = (pctKom * CONFIG.kompetensi.weight) / 100;
-      const wKap = (pctKap * CONFIG.kapasitas.weight) / 100;
-      const wProf = (pctProf * CONFIG.profesional.weight) / 100;
-      const wKar = (pctKar * CONFIG.karakter.weight) / 100;
-
-      const totalWeightedPercent = wKom + wKap + wProf + wKar;
+      const sumKom = sumBy('kompetensi'), 
+            sumKap = sumBy('kapasitas'), 
+            sumProf = sumBy('profesional'), 
+            sumKar = sumBy('karakter');
+      
+      const pct = { 
+        kom: sumKom / CONFIG.kompetensi.maxTotal * 100,
+        kap: sumKap / CONFIG.kapasitas.maxTotal * 100,
+        prof: sumProf / CONFIG.profesional.maxTotal * 100,
+        kar: sumKar / CONFIG.karakter.maxTotal * 100 
+      };
+      
+      const w = { 
+        kom: pct.kom * CONFIG.kompetensi.weight / 100,
+        kap: pct.kap * CONFIG.kapasitas.weight / 100,
+        prof: pct.prof * CONFIG.profesional.weight / 100,
+        kar: pct.kar * CONFIG.karakter.weight / 100 
+      };
+      
+      const weighted = w.kom + w.kap + w.prof + w.kar;
       const rawSum = sumKom + sumKap + sumProf + sumKar;
-      const overallPct = (rawSum / DENOM) * 100;
+      const overall = rawSum / DENOM * 100;
 
       let conclusion = 'Sangat Kurang';
-      if (overallPct >= 90) conclusion = 'Unggul';
-      else if (overallPct >= 80) conclusion = 'Baik';
-      else if (overallPct >= 69) conclusion = 'Perlu Pengembangan';
-      else if (overallPct >= 58) conclusion = 'Kurang';
+      if (overall >= 90) conclusion = 'Unggul';
+      else if (overall >= 80) conclusion = 'Baik';
+      else if (overall >= 69) conclusion = 'Perlu Pengembangan';
+      else if (overall >= 58) conclusion = 'Kurang';
 
-      return { sumKom, sumKap, sumProf, sumKar, pctKom, pctKap, pctProf, pctKar, wKom, wKap, wProf, wKar, totalWeightedPercent, rawSum, overallPct, conclusion };
+      return { weighted, overall, conclusion };
     }
 
-    function validateForm() {
-      const requiredIds = ['departemen','namaPenilai','jabatanPenilai','nama','posisi','periode'];
-      for (const id of requiredIds) {
-        const el = document.getElementById(id);
-        if (!el || !String(el.value).trim()) return { ok:false, msg:'Lengkapi data penilai & karyawan (nama, departemen, jabatan, posisi, periode).' };
-      }
-      const allSliders = document.querySelectorAll('input[type="range"].slider, input[type="range"].comp, input[type="range"].kapasitas, input[type="range"].profesional, input[type="range"].karakter');
-      for (const s of allSliders) {
-        const min = Number(s.min || 0), max = Number(s.max || 0), val = Number(s.value || 0);
-        if (isNaN(val) || val < min || val > max) return { ok:false, msg:`Nilai ${s.name} harus antara ${min} - ${max}.` };
-      }
-      return { ok:true };
+    // ============ CHECK FORM COMPLETION ============
+    function checkFormCompletion() {
+      const periode = document.getElementById('periode').value;
+      const penilai = document.getElementById('namaPenilai').value;
+      const nama = document.getElementById('nama').value;
+      
+      const btnSubmit = document.getElementById('btnSubmit');
+      btnSubmit.disabled = !(periode && penilai && nama);
     }
 
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzMZPK-fiEcwquXyv6do_jGV6QQHNrH2siynBaeGHmv5xa8iQ8UKCxD-eH2clpIfygl/exec';
+    // ============ EVENT LISTENERS ============
+    document.getElementById('periode').addEventListener('change', checkFormCompletion);
+    
+    document.getElementById('namaPenilai').addEventListener('change', async e => {
+      const opt = e.target.selectedOptions[0];
+      const dept = opt?.dataset.departemen || '';
+      document.getElementById('departemen').value = dept;
+      document.getElementById('jabatanPenilai').value = opt?.dataset.jabatan || '';
+      
+      // Reset state
+      penilaianState = {};
+      currentKaryawanList = [];
+      document.getElementById('nama').value = '';
+      document.getElementById('posisi').value = '';
+      document.getElementById('currentKaryawanIndex').value = '-1';
+      
+      // Reset semua slider ke 0
+      resetAllSlidersToZero();
+
+      if (dept) {
+        await loadKaryawanByDept(dept);
+      } else {
+        document.getElementById('sectionKaryawan').classList.add('hidden');
+        document.getElementById('noKaryawanMessage').classList.remove('hidden');
+        document.getElementById('noKaryawanMessage').textContent = 'Pilih penilai terlebih dahulu';
+      }
+      
+      checkFormCompletion();
+    });
+
+    // ============ INIT ============
     document.addEventListener('DOMContentLoaded', () => {
       initSliders();
+      loadPenilai();
+      document.getElementById('btnSubmit').disabled = true;
 
-      document.getElementById('formEval').addEventListener('submit', async function(e) {
+      // SUBMIT
+      document.getElementById('formEval').addEventListener('submit', async e => {
         e.preventDefault();
+        
+        // Simpan nilai karyawan yang sedang aktif
+        const currentIndex = parseInt(document.getElementById('currentKaryawanIndex').value);
+        if (currentIndex >= 0) {
+          savePenilaianForKaryawan(currentIndex);
+        }
+        
         const v = validateForm();
-        if (!v.ok) { alert(v.msg); return; }
+        if (!v.ok) return alert(v.msg);
+
+        // Ambil karyawan yang sedang aktif
+        const karyawan = currentKaryawanList[currentIndex];
+        
+        if (!karyawan) {
+          alert('Pilih karyawan terlebih dahulu');
+          return;
+        }
 
         const calc = calcAll();
-        const fd = new FormData(this);
-        fd.append('sumKom', calc.sumKom);
-        fd.append('sumKap', calc.sumKap);
-        fd.append('sumProf', calc.sumProf);
-        fd.append('sumKar', calc.sumKar);
-        fd.append('overallPct', calc.overallPct.toFixed(2));
-        fd.append('conclusion', calc.conclusion);
-        fd.append('weightedPercent', calc.totalWeightedPercent.toFixed(2));
-        fd.append('detail', JSON.stringify({
-          pctKom: calc.pctKom, pctKap: calc.pctKap, pctProf: calc.pctProf, pctKar: calc.pctKar,
-          wKom: calc.wKom, wKap: calc.wKap, wProf: calc.wProf, wKar: calc.wKar
-        }));
+        const payload = {
+          departemen: document.getElementById('departemen').value,
+          namaPenilai: document.getElementById('namaPenilai').value,
+          jabatanPenilai: document.getElementById('jabatanPenilai').value,
+          nama: karyawan.nama,
+          posisi: karyawan.jabatan,
+          periode: document.getElementById('periode').value,
+          sliderDetail: SLIDER_NAMES.map(name => ({
+            name: name,
+            value: penilaianState[karyawan.nama]?.[name] || 0
+          })),
+          lastWeighted: calc.weighted.toFixed(2),
+          lastOverall: calc.overall.toFixed(2),
+          lastConclusion: calc.conclusion
+        };
 
-        const btn = document.getElementById('btnSubmit');
-        const orig = btn.innerText;
-        btn.disabled = true;
-        btn.innerText = 'Mengirim...';
+        const btnSubmit = document.getElementById('btnSubmit');
+        btnSubmit.disabled = true; 
+        btnSubmit.textContent = 'Loading...';
 
         try {
-          const res = await fetch(GAS_URL, { method:'POST', body: fd });
-          if (res.ok) {
-            alert('Data berhasil dikirim ke server.');
+          const fd = new FormData();
+          fd.append('action', 'submitPenilaian');
+          fd.append('data', JSON.stringify(payload));
+          const res = await fetch(GAS_URL, { method:'POST', body:fd });
+          const json = await res.json();
+          
+          if (json.success) {
+            alert(`✅ Penilaian untuk ${karyawan.nama} berhasil disimpan`);
+            
+            // Hapus karyawan dari list atau lanjut ke berikutnya
+            if (currentIndex + 1 < currentKaryawanList.length) {
+              swiperInstance.slideTo(currentIndex + 1);
+            } else {
+              if (confirm('Semua karyawan sudah dinilai. Reset form?')) {
+                location.reload();
+              }
+            }
           } else {
-            const txt = await res.text().catch(()=>res.statusText);
-            alert('❌ Gagal mengirim: ' + (txt || res.status));
+            alert('❌ ' + (json.error || 'Gagal menyimpan data'));
           }
-        } catch (err) {
-          alert('❌ Error saat mengirim: ' + err.message);
-        } finally {
-          btn.disabled = false;
-          btn.innerText = orig;
+        } catch(e) { 
+          alert('❌ Error: '+e.message); 
+        } finally { 
+          btnSubmit.disabled=false; 
+          btnSubmit.textContent='Submit'; 
         }
       });
     });
   </script>
 </body>
 </html>
-
-
-
-
-
