@@ -48,12 +48,16 @@
       cursor: pointer;
     }
     
+    /* Styling untuk card aktif */
     .swiper-slide-active .karyawan-card {
       background-color: #eff6ff;
       border-color: #3b82f6;
       border-width: 2px;
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
     }
 
+    /* Indicator karyawan */
     .karyawan-indicator {
       display: inline-block;
       width: 10px;
@@ -83,6 +87,113 @@
     }
     .loading-pulse {
       animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    /* Styling untuk navigasi panah */
+    .karyawan-navigation {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 16px 0 8px;
+    }
+    
+    .nav-arrow {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: white;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #3b82f6;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .nav-arrow:hover:not(:disabled) {
+      background: #f8fafc;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+      border-color: #3b82f6;
+    }
+
+    .nav-arrow:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    .nav-arrow:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      box-shadow: none;
+      background: #f1f5f9;
+    }
+
+    /* Container dengan partial visibility */
+    .swiper-container-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    
+    .swiper-container-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 40px;
+      background: linear-gradient(to right, transparent, white);
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.7;
+      border-radius: 0 12px 12px 0;
+    }
+
+    /* Hint text */
+    .swipe-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #64748b;
+      font-size: 13px;
+      margin: 8px 0 4px;
+    }
+
+    .swipe-hint span {
+      font-size: 18px;
+      color: #3b82f6;
+    }
+
+    /* Card styling */
+    .karyawan-card {
+      position: relative;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    /* STICKY SECTION */
+    .sticky-karyawan {
+      position: sticky;
+      top: 16px; /* Jarak dari atas saat sticky */
+      z-index: 40; /* Lebih tinggi dari konten lain */
+      transition: all 0.3s ease;
+    }
+
+    /* Bayangan saat sticky */
+    .sticky-karyawan.is-sticky {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+
+    /* Scroll margin untuk anchor yang halus */
+    .scroll-margin {
+      scroll-margin-top: 80px;
     }
   </style>
 </head>
@@ -120,8 +231,8 @@
         </div>
       </section>
 
-      <!-- DATA KARYAWAN DENGAN INDICATOR -->
-      <section class="card">
+      <!-- DATA KARYAWAN DENGAN STICKY - INI YANG AKAN NEMPEL -->
+      <section class="card sticky-karyawan" id="karyawanSection">
         <div class="card-header">
           <div class="font-semibold">Data Karyawan</div>
           <div class="card-sub flex items-center gap-2" id="karyawanStatus">
@@ -131,7 +242,7 @@
           </div>
         </div>
         <div class="card-body">
-          <!-- AREA LOADING - Hanya muncul saat fetching data -->
+          <!-- AREA LOADING -->
           <div id="loadingKaryawan" class="hidden flex flex-col items-center justify-center py-10">
             <div class="flex items-center gap-3 text-blue-600 font-medium text-lg loading-pulse">
               <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -140,15 +251,31 @@
               </svg>
               <span>Loading data karyawan...</span>
             </div>
-         
           </div>
 
           <div id="sectionKaryawan" class="hidden">
-            <div class="swiper mySwiper">
-              <div class="swiper-wrapper" id="swiperKaryawan"></div>
-              <div class="swiper-pagination mt-4"></div>
+            <!-- Navigasi Panah + Swiper -->
+            <div class="karyawan-navigation">
+              <button type="button" class="nav-arrow" id="prevKaryawan" disabled>←</button>
+              
+              <div class="swiper-container-wrapper flex-1">
+                <div class="swiper mySwiper">
+                  <div class="swiper-wrapper" id="swiperKaryawan"></div>
+                </div>
+              </div>
+              
+              <button type="button" class="nav-arrow" id="nextKaryawan" disabled>→</button>
             </div>
+
+            <!-- Hint text -->
+            <div class="swipe-hint">
+              <span>←</span> Geser atau klik panah untuk lihat karyawan lain <span>→</span>
+            </div>
+
+            <!-- Pagination -->
+            <div class="swiper-pagination mt-2"></div>
           </div>
+
           <div id="noKaryawanMessage" class="hidden text-center py-8 text-gray-500">
             Tidak ada karyawan di departemen ini
           </div>
@@ -159,7 +286,7 @@
       </section>
 
       <!-- KOMPETENSI -->
-      <section class="card">
+      <section class="card scroll-margin" id="kompetensiSection">
         <div class="card-header">
           <div class="font-semibold">KOMPETENSI</div>
           <div class="card-sub">&gt;15 = Tinggi | 9–15 = Sedang | &lt;9 = Rendah</div>
@@ -190,7 +317,7 @@
       </section>
 
       <!-- KAPASITAS -->
-      <section class="card">
+      <section class="card scroll-margin">
         <div class="card-header">
           <div class="font-semibold">KAPASITAS</div>
           <div class="card-sub">&gt;15 = Kuat | 9–15 = Sedang | &lt;9 = Lemah</div>
@@ -210,7 +337,7 @@
       </section>
 
       <!-- PROFESIONALISME -->
-      <section class="card">
+      <section class="card scroll-margin">
         <div class="card-header">
           <div class="font-semibold">PROFESIONALISME KERJA</div>
           <div class="card-sub">&gt;40 = Sangat Baik | 30–40 = Baik | 19–29 = Sedang | &lt;19 = Kurang</div>
@@ -283,7 +410,7 @@
       </section>
 
       <!-- KARAKTER -->
-      <section class="card">
+      <section class="card scroll-margin">
         <div class="card-header">
           <div class="font-semibold">KARAKTER & KAPASITAS KERJA</div>
           <div class="card-sub">&gt;30 = Sangat Baik | 20–30 = Baik | 9–19 = Sedang | &lt;9 = Kurang</div>
@@ -441,11 +568,15 @@
       counter.textContent = '0 karyawan';
       document.getElementById('karyawanIndicator').innerHTML = ''; // kosongkan indicator
       
-      // 2. FETCH DATA - loading akan tetap tampil selama proses ini berlangsung
+      // Disable tombol panah
+      document.getElementById('prevKaryawan').disabled = true;
+      document.getElementById('nextKaryawan').disabled = true;
+      
+      // 2. FETCH DATA
       try {
         const data = await fetchFromGAS('getKaryawanByDept', { departemen: dept });
         
-        // 3. DATA TERIMA - LANGSUNG HILANGKAN LOADING
+        // 3. DATA TERIMA
         loadingEl.classList.add('hidden');
         
         // 4. Update data
@@ -469,6 +600,10 @@
           resetAllSlidersToZero();
           loadPenilaianForKaryawan(0);
           updateActiveKaryawan(0);
+          
+          // Enable tombol panah jika perlu
+          document.getElementById('prevKaryawan').disabled = true;
+          document.getElementById('nextKaryawan').disabled = data.length <= 1;
         } else {
           // Tidak ada karyawan
           noMessage.classList.remove('hidden');
@@ -478,7 +613,6 @@
         }
 
       } catch (error) {
-        // 5. ERROR - loading hilang, tampilkan pesan error
         loadingEl.classList.add('hidden');
         noMessage.classList.remove('hidden');
         noMessage.innerHTML = '❌ Gagal memuat data karyawan. <br> Silakan coba lagi.';
@@ -515,7 +649,7 @@
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
         slide.innerHTML = `
-          <div class="border rounded p-4 shadow text-center cursor-pointer hover:bg-gray-50 transition karyawan-card relative ${index === 0 ? 'bg-blue-50 border-blue-500 border-2' : ''}"
+          <div class="border rounded-lg p-4 shadow-md text-center cursor-pointer hover:shadow-lg transition karyawan-card relative ${index === 0 ? 'bg-blue-50 border-blue-500 border-2' : ''}"
                data-nama="${k.nama}"
                data-jabatan="${k.jabatan}"
                data-index="${index}">
@@ -535,7 +669,8 @@
         slidesPerView: 1,
         spaceBetween: 10,
         pagination: {
-          clickable: true
+          el: '.swiper-pagination',
+          clickable: true,
         },
         on: {
           slideChange: function() {
@@ -550,6 +685,10 @@
             resetAllSlidersToZero();
             loadPenilaianForKaryawan(index);
             updateActiveKaryawan(index);
+            
+            // Update tombol panah
+            document.getElementById('prevKaryawan').disabled = index === 0;
+            document.getElementById('nextKaryawan').disabled = index === currentKaryawanList.length - 1;
           }
         }
       });
@@ -789,10 +928,50 @@
       checkFormCompletion();
     });
 
+    // Event listener untuk tombol panah
+    document.getElementById('prevKaryawan').addEventListener('click', () => {
+      if (swiperInstance) {
+        swiperInstance.slidePrev();
+      }
+    });
+
+    document.getElementById('nextKaryawan').addEventListener('click', () => {
+      if (swiperInstance) {
+        swiperInstance.slideNext();
+      }
+    });
+
+    // ============ STICKY EFFECT HANDLER ============
+    function initStickyEffect() {
+      const stickySection = document.getElementById('karyawanSection');
+      
+      if (!stickySection) return;
+      
+      // Gunakan Intersection Observer untuk mendeteksi ketika sticky aktif
+      const observer = new IntersectionObserver(
+        ([e]) => {
+          // Jika elemen sticky, tambahkan class is-sticky
+          if (e.target.classList.contains('sticky-karyawan')) {
+            if (e.intersectionRatio < 1) {
+              // Sedikit tidak terlihat (mulai sticky)
+              e.target.classList.add('is-sticky');
+            } else {
+              // Sepenuhnya terlihat
+              e.target.classList.remove('is-sticky');
+            }
+          }
+        },
+        { threshold: [0, 1] }
+      );
+      
+      observer.observe(stickySection);
+    }
+
     // ============ INIT ============
     document.addEventListener('DOMContentLoaded', () => {
       initSliders();
       loadPenilai();
+      initStickyEffect(); // Inisialisasi efek sticky
       document.getElementById('btnSubmit').disabled = true;
 
       // SUBMIT
