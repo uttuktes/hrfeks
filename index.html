@@ -10,17 +10,19 @@
 
   <style>
     body { background:#f8fafc; color:#0f172a; }
+    
+    /* PERKECIL UKURAN FORM 20% */
     .card { border:1px solid #111827; border-radius:.5rem; background:#fff; overflow:hidden; }
-    .card-header { background:#111827; color:#fff; padding:.6rem .9rem; }
-    .card-sub { color:#94a3b8; font-size:.85rem; margin-top:.35rem; }
-    .card-body { padding:.8rem; }
-    .lbl-small { font-size:.90rem; color:#0f172a; }
-    .val-badge { min-width:48px; text-align:center; font-weight:600; color:#0f172a; }
+    .card-header { background:#111827; color:#fff; padding:0.5rem 0.8rem; } /* Diperkecil dari 0.6/0.9 */
+    .card-sub { color:#94a3b8; font-size:.8rem; margin-top:.25rem; } /* Diperkecil */
+    .card-body { padding:0.6rem; } /* Diperkecil dari 0.8rem */
+    .lbl-small { font-size:.85rem; color:#0f172a; } /* Diperkecil */
+    .val-badge { min-width:40px; text-align:center; font-weight:600; color:#0f172a; font-size:0.9rem; } /* Diperkecil */
 
     input[type="range"] {
       -webkit-appearance: none;
       width: 100%;
-      height: 8px;
+      height: 6px; /* Diperkecil dari 8px */
       border-radius: 999px;
       background: linear-gradient(to right, #4285f4 var(--pos,50%), #e6e7e9 var(--pos,50%));
       outline: none;
@@ -29,8 +31,8 @@
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 18px;
-      height: 18px;
+      width: 16px; /* Diperkecil dari 18px */
+      height: 16px; /* Diperkecil dari 18px */
       border-radius: 50%;
       background: #4285f4;
       border: 2px solid white;
@@ -38,30 +40,20 @@
       cursor: pointer;
       margin-top: -5px;
     }
-    input[type="range"]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #4285f4;
-      border: 2px solid white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      cursor: pointer;
-    }
     
     /* Styling untuk card aktif */
     .swiper-slide-active .karyawan-card {
       background-color: #eff6ff;
       border-color: #3b82f6;
       border-width: 2px;
-      transform: scale(1.02);
-      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+      box-shadow: 0 5px 15px -5px rgba(59, 130, 246, 0.5); /* Diperkecil shadow */
     }
 
     /* Indicator karyawan */
     .karyawan-indicator {
       display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 8px; /* Diperkecil dari 10px */
+      height: 8px; /* Diperkecil dari 10px */
       border-radius: 50%;
       background: #94a3b8;
       margin: 0 2px;
@@ -75,10 +67,6 @@
     .karyawan-indicator.filled {
       background: #10b981;
     }
-    .karyawan-indicator.active.filled {
-      background: #3b82f6;
-      box-shadow: 0 0 0 2px #10b981;
-    }
 
     /* Animasi loading */
     @keyframes pulse {
@@ -89,56 +77,43 @@
       animation: pulse 1.5s ease-in-out infinite;
     }
 
-    /* Styling untuk navigasi panah */
+    /* Navigasi panah - diperkecil */
     .karyawan-navigation {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin: 16px 0 8px;
+      gap: 8px; /* Diperkecil dari 12px */
+      margin: 12px 0 4px; /* Diperkecil */
     }
     
     .nav-arrow {
-      width: 44px;
-      height: 44px;
+      width: 36px; /* Diperkecil dari 44px */
+      height: 36px; /* Diperkecil dari 44px */
       border-radius: 50%;
       background: white;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Diperkecil shadow */
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 20px; /* Diperkecil dari 24px */
       color: #3b82f6;
       transition: all 0.2s;
       flex-shrink: 0;
-      z-index: 10;
     }
 
     .nav-arrow:hover:not(:disabled) {
       background: #f8fafc;
-      transform: scale(1.1);
-      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
-      border-color: #3b82f6;
-    }
-
-    .nav-arrow:active:not(:disabled) {
-      transform: scale(0.95);
-    }
-
-    .nav-arrow:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      box-shadow: none;
-      background: #f1f5f9;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
 
     /* Container dengan partial visibility */
     .swiper-container-wrapper {
       position: relative;
       overflow: hidden;
-      border-radius: 12px;
+      border-radius: 10px; /* Diperkecil */
     }
     
     .swiper-container-wrapper::after {
@@ -147,69 +122,109 @@
       top: 0;
       right: 0;
       height: 100%;
-      width: 40px;
+      width: 30px; /* Diperkecil dari 40px */
       background: linear-gradient(to right, transparent, white);
       pointer-events: none;
       z-index: 5;
       opacity: 0.7;
-      border-radius: 0 12px 12px 0;
+      border-radius: 0 10px 10px 0;
     }
 
-    /* Hint text */
+    /* Hint text - diperkecil */
     .swipe-hint {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px; /* Diperkecil */
       color: #64748b;
-      font-size: 13px;
-      margin: 8px 0 4px;
+      font-size: 12px; /* Diperkecil dari 13px */
+      margin: 4px 0 2px; /* Diperkecil */
     }
 
     .swipe-hint span {
-      font-size: 18px;
+      font-size: 16px; /* Diperkecil dari 18px */
       color: #3b82f6;
     }
 
     /* Card styling */
     .karyawan-card {
       position: relative;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease; /* Dipercepat */
       border: 2px solid transparent;
+      padding: 0.8rem !important; /* Diperkecil dari 1rem */
+    }
+
+    /* Badge centang */
+    .badge-dinilai {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      font-size: 10px; /* Diperkecil */
+      background: #10b981;
+      color: white;
+      padding: 2px 6px; /* Diperkecil */
+      border-radius: 999px;
     }
 
     /* STICKY SECTION */
     .sticky-karyawan {
       position: sticky;
-      top: 16px; /* Jarak dari atas saat sticky */
-      z-index: 40; /* Lebih tinggi dari konten lain */
-      transition: all 0.3s ease;
+      top: 12px; /* Diperkecil dari 16px */
+      z-index: 40;
+      transition: all 0.2s ease;
     }
 
-    /* Bayangan saat sticky */
     .sticky-karyawan.is-sticky {
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1); /* Diperkecil shadow */
     }
 
-    /* Scroll margin untuk anchor yang halus */
+    /* Scroll margin */
     .scroll-margin {
-      scroll-margin-top: 80px;
+      scroll-margin-top: 70px; /* Diperkecil dari 80px */
+    }
+
+    /* HAPUS BULLET POINT */
+    .no-bullet {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    /* Perkecil jarak antar section */
+    .space-y-4 {
+      margin-top: 0.8rem !important; /* Diperkecil */
+    }
+
+    .space-y-3 {
+      margin-top: 0.5rem !important; /* Diperkecil */
+    }
+
+    .gap-3 {
+      gap: 0.5rem !important; /* Diperkecil */
+    }
+
+    .p-4 {
+      padding: 0.8rem !important; /* Diperkecil dari 1rem */
+    }
+
+    /* Perkecil teks di header card */
+    .card-header .font-semibold {
+      font-size: 0.95rem; /* Diperkecil */
     }
   </style>
 </head>
 <body>
-  <div class="max-w-3xl mx-auto p-4 sm:p-6">
-    <img src="https://media.licdn.com/dms/image/v2/D4E3DAQHdQ8hI0F8kFw/image-scale_191_1128/image-scale_191_1128/0/1729146506484/espera_satya_cover?e=2147483647&amp;v=beta&amp;t=Li35iFgVbilg53Our-rLWfp4cdXEVmF1ZzX6mRVCLfw" alt="Espera Satya" class="w-full h-32 object-cover object-right rounded-t-lg mb-4">
-    <h1 class="text-2xl font-bold text-center mb-1">Evaluasi Performa Kinerja</h1>
+  <div class="max-w-3xl mx-auto p-3 sm:p-4"> <!-- Diperkecil padding -->
+    <img src="https://media.licdn.com/dms/image/v2/D4E3DAQHdQ8hI0F8kFw/image-scale_191_1128/image-scale_191_1128/0/1729146506484/espera_satya_cover?e=2147483647&amp;v=beta&amp;t=Li35iFgVbilg53Our-rLWfp4cdXEVmF1ZzX6mRVCLfw" alt="Espera Satya" class="w-full h-28 object-cover object-right rounded-t-lg mb-2"> <!-- Diperkecil height dan margin -->
 
-    <form id="formEval" class="space-y-4">
+    <form id="formEval" class="space-y-3"> <!-- Diperkecil dari space-y-4 -->
       <!-- PERIODE EVALUASI -->
       <section class="card">
         <div class="card-header">
           <div class="font-semibold">Periode Evaluasi</div>
         </div>
         <div class="card-body">
-          <select id="periode" name="periode" class="p-2 border rounded w-full md:w-1/2" required>
+          <select id="periode" name="periode" class="p-1.5 border rounded w-full md:w-1/2 text-sm" required> <!-- Diperkecil padding -->
             <option value="">Pilih Periode Evaluasi *</option>
             <option value="CW1">November - Februari</option>
             <option value="CW2">Maret - Juni</option>
@@ -223,29 +238,29 @@
         <div class="card-header">
           <div class="font-semibold">Data Nama Penilai</div>
         </div>
-        <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-3">
-          <select id="namaPenilai" name="namaPenilai" class="p-2 border rounded" required>
+        <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-2"> <!-- Diperkecil gap -->
+          <select id="namaPenilai" name="namaPenilai" class="p-1.5 border rounded text-sm" required> <!-- Diperkecil padding -->
             <option value="">Pilih Nama Penilai *</option>
           </select>
-          <input id="departemen" name="departemen" placeholder="Departemen *" class="p-2 border rounded bg-gray-100" readonly required>
+          <input id="departemen" name="departemen" placeholder="Departemen *" class="p-1.5 border rounded bg-gray-100 text-sm" readonly required> <!-- Diperkecil padding -->
         </div>
       </section>
 
-      <!-- DATA KARYAWAN DENGAN STICKY - INI YANG AKAN NEMPEL -->
+      <!-- DATA KARYAWAN DENGAN STICKY -->
       <section class="card sticky-karyawan" id="karyawanSection">
         <div class="card-header">
           <div class="font-semibold">Data Karyawan</div>
           <div class="card-sub flex items-center gap-2" id="karyawanStatus">
-            <span id="karyawanCounter">0 karyawan</span>
-            <span class="mx-2">|</span>
+            <span id="karyawanCounter" class="text-xs">0 karyawan</span> <!-- Diperkecil -->
+            <span class="mx-1">|</span> <!-- Diperkecil margin -->
             <span id="karyawanIndicator" class="flex gap-1"></span>
           </div>
         </div>
         <div class="card-body">
           <!-- AREA LOADING -->
-          <div id="loadingKaryawan" class="hidden flex flex-col items-center justify-center py-10">
-            <div class="flex items-center gap-3 text-blue-600 font-medium text-lg loading-pulse">
-              <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <div id="loadingKaryawan" class="hidden flex flex-col items-center justify-center py-6"> <!-- Diperkecil padding -->
+            <div class="flex items-center gap-2 text-blue-600 font-medium text-base loading-pulse"> <!-- Diperkecil -->
+              <svg class="animate-spin h-4 w-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"> <!-- Diperkecil -->
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -267,16 +282,18 @@
               <button type="button" class="nav-arrow" id="nextKaryawan" disabled>→</button>
             </div>
 
-            <!-- Hint text -->
-            <div class="swipe-hint">
+            <!-- Hint text - HAPUS BULLET, PAKAI TEKS BIASA -->
+            <div class="swipe-hint no-bullet">
               <span>←</span> Geser atau klik panah untuk lihat karyawan lain <span>→</span>
             </div>
 
             <!-- Pagination -->
-            <div class="swiper-pagination mt-2"></div>
+            <div class="swiper-pagination mt-1"></div> <!-- Diperkecil margin -->
           </div>
 
-          <div id="noKaryawanMessage" class="hidden text-center py-8 text-gray-500">
+          <!-- PESAN INI DIHAPUS - TIDAK ADA BULLET -->
+          <!-- <div id="noKaryawanMessage" class="hidden text-center py-4 text-gray-500 text-sm"> --> <!-- Diperkecil -->
+          <div id="noKaryawanMessage" class="hidden text-center py-4 text-gray-500 text-sm">
             Tidak ada karyawan di departemen ini
           </div>
         </div>
@@ -291,25 +308,25 @@
           <div class="font-semibold">KOMPETENSI</div>
           <div class="card-sub">&gt;15 = Tinggi | 9–15 = Sedang | &lt;9 = Rendah</div>
         </div>
-        <div class="card-body space-y-3">
+        <div class="card-body space-y-2"> <!-- Diperkecil dari space-y-3 -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">1. Keterampilan Kerja</label>
             <div class="sm:col-span-1">
-              <input class="slider kompetensi" type="range" name="comp1" min="0" max="20" value="0">
+              <input class="slider kompetensi w-full" type="range" name="comp1" min="0" max="20" value="0">
             </div>
             <div class="val-badge" data-for="comp1">0</div>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">2. Pengetahuan</label>
             <div class="sm:col-span-1">
-              <input class="slider kompetensi" type="range" name="comp2" min="0" max="20" value="0">
+              <input class="slider kompetensi w-full" type="range" name="comp2" min="0" max="20" value="0">
             </div>
             <div class="val-badge" data-for="comp2">0</div>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">3. Pengalaman</label>
             <div class="sm:col-span-1">
-              <input class="slider kompetensi" type="range" name="comp3" min="0" max="20" value="0">
+              <input class="slider kompetensi w-full" type="range" name="comp3" min="0" max="20" value="0">
             </div>
             <div class="val-badge" data-for="comp3">0</div>
           </div>
@@ -322,15 +339,15 @@
           <div class="font-semibold">KAPASITAS</div>
           <div class="card-sub">&gt;15 = Kuat | 9–15 = Sedang | &lt;9 = Lemah</div>
         </div>
-        <div class="card-body space-y-3">
+        <div class="card-body space-y-2"> <!-- Diperkecil -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">1. Fisik</label>
-            <div class="sm:col-span-1"><input class="slider kapasitas" type="range" name="kap1" min="0" max="20" value="0"></div>
+            <div class="sm:col-span-1"><input class="slider kapasitas w-full" type="range" name="kap1" min="0" max="20" value="0"></div>
             <div class="val-badge" data-for="kap1">0</div>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">2. Mental</label>
-            <div class="sm:col-span-1"><input class="slider kapasitas" type="range" name="kap2" min="0" max="20" value="0"></div>
+            <div class="sm:col-span-1"><input class="slider kapasitas w-full" type="range" name="kap2" min="0" max="20" value="0"></div>
             <div class="val-badge" data-for="kap2">0</div>
           </div>
         </div>
@@ -342,67 +359,67 @@
           <div class="font-semibold">PROFESIONALISME KERJA</div>
           <div class="card-sub">&gt;40 = Sangat Baik | 30–40 = Baik | 19–29 = Sedang | &lt;19 = Kurang</div>
         </div>
-        <div class="card-body space-y-3">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+        <div class="card-body space-y-2"> <!-- Diperkecil -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center"> <!-- Diperkecil -->
             <label class="lbl-small">1. Pemahaman kebijakan mutu</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p1" min="0" max="50" value="0">
+            <div class="flex items-center gap-2"> <!-- Diperkecil -->
+              <input class="slider profesional flex-1" type="range" name="p1" min="0" max="50" value="0">
               <div class="val-badge" data-for="p1">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">2. Pengembangan diri & peningkatan performa kerja</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p2" min="0" max="50" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider profesional flex-1" type="range" name="p2" min="0" max="50" value="0">
               <div class="val-badge" data-for="p2">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">3. Perencanaan & pengendalian kualitas kerja</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p3" min="0" max="50" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider profesional flex-1" type="range" name="p3" min="0" max="50" value="0">
               <div class="val-badge" data-for="p3">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">4. Pencapaian target produktivitas kinerja</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p4" min="0" max="50" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider profesional flex-1" type="range" name="p4" min="0" max="50" value="0">
               <div class="val-badge" data-for="p4">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">5. Inisiatif / Gagasan baru</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p5" min="0" max="50" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider profesional flex-1" type="range" name="p5" min="0" max="50" value="0">
               <div class="val-badge" data-for="p5">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">6. Tanggung jawab dalam menjalankan pekerjaan</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p6" min="0" max="50" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider profesional flex-1" type="range" name="p6" min="0" max="50" value="0">
               <div class="val-badge" data-for="p6">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">7. Pendekatan interpersonal dengan tim</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p7" min="0" max="50" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider profesional flex-1" type="range" name="p7" min="0" max="50" value="0">
               <div class="val-badge" data-for="p7">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">8. Komunikasi dalam tim</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p8" min="0" max="50" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider profesional flex-1" type="range" name="p8" min="0" max="50" value="0">
               <div class="val-badge" data-for="p8">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">9. Target Administrasi (Laporan / Deadline)</label>
-            <div class="flex items-center gap-3">
-              <input class="slider profesional" type="range" name="p9" min="0" max="50" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider profesional flex-1" type="range" name="p9" min="0" max="50" value="0">
               <div class="val-badge" data-for="p9">0</div>
             </div>
           </div>
@@ -415,74 +432,75 @@
           <div class="font-semibold">KARAKTER & KAPASITAS KERJA</div>
           <div class="card-sub">&gt;30 = Sangat Baik | 20–30 = Baik | 9–19 = Sedang | &lt;9 = Kurang</div>
         </div>
-        <div class="card-body space-y-3">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+        <div class="card-body space-y-2"> <!-- Diperkecil -->
+          <!-- 10 item dengan gap diperkecil -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">1. Orientasi terhadap proses & hasil kerja</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k1" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k1" min="0" max="40" value="0">
               <div class="val-badge" data-for="k1">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">2. Integritas (kedisiplinan, kebersihan, loyalitas)</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k2" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k2" min="0" max="40" value="0">
               <div class="val-badge" data-for="k2">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">3. Kontribusi terhadap strategi bisnis</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k3" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k3" min="0" max="40" value="0">
               <div class="val-badge" data-for="k3">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">4. Menghormati atasan & rekan kerja</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k4" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k4" min="0" max="40" value="0">
               <div class="val-badge" data-for="k4">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">5. Kerja sama tim</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k5" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k5" min="0" max="40" value="0">
               <div class="val-badge" data-for="k5">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">6. Kemampuan beradaptasi</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k6" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k6" min="0" max="40" value="0">
               <div class="val-badge" data-for="k6">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">7. Pemecahan masalah & ketepatan keputusan</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k7" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k7" min="0" max="40" value="0">
               <div class="val-badge" data-for="k7">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">8. Kedewasaan dalam bersikap</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k8" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k8" min="0" max="40" value="0">
               <div class="val-badge" data-for="k8">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">9. Semangat kerja & kemampuan belajar</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k9" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k9" min="0" max="40" value="0">
               <div class="val-badge" data-for="k9">0</div>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">10. Kepemimpinan</label>
-            <div class="flex items-center gap-3">
-              <input class="slider karakter" type="range" name="k10" min="0" max="40" value="0">
+            <div class="flex items-center gap-2">
+              <input class="slider karakter flex-1" type="range" name="k10" min="0" max="40" value="0">
               <div class="val-badge" data-for="k10">0</div>
             </div>
           </div>
@@ -490,7 +508,7 @@
       </section>
 
       <div class="text-right">
-        <button id="btnSubmit" type="submit" class="px-5 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 disabled:bg-gray-400" disabled>Submit</button>
+        <button id="btnSubmit" type="submit" class="px-4 py-1.5 rounded bg-blue-500 text-white hover:bg-blue-600 disabled:bg-gray-400 text-sm" disabled>Submit</button> <!-- Diperkecil -->
       </div>
     </form>
   </div>
@@ -649,13 +667,13 @@
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
         slide.innerHTML = `
-          <div class="border rounded-lg p-4 shadow-md text-center cursor-pointer hover:shadow-lg transition karyawan-card relative ${index === 0 ? 'bg-blue-50 border-blue-500 border-2' : ''}"
+          <div class="border rounded-lg p-3 shadow-md text-center cursor-pointer hover:shadow-lg transition karyawan-card relative ${index === 0 ? 'bg-blue-50 border-blue-500 border-2' : ''}" style="padding: 0.8rem !important;"
                data-nama="${k.nama}"
                data-jabatan="${k.jabatan}"
                data-index="${index}">
-            <div class="font-semibold text-lg">${k.nama}</div>
-            <div class="text-sm text-gray-500">${k.jabatan}</div>
-            ${isFilled ? '<span class="absolute top-2 right-2 text-xs bg-green-500 text-white px-2 py-1 rounded-full">✓</span>' : ''}
+            <div class="font-semibold text-base">${k.nama}</div> <!-- Diperkecil -->
+            <div class="text-xs text-gray-500">${k.jabatan}</div> <!-- Diperkecil -->
+            ${isFilled ? '<span class="badge-dinilai">✓</span>' : ''}
           </div>
         `;
         
@@ -667,7 +685,7 @@
       
       swiperInstance = new Swiper('.mySwiper', {
         slidesPerView: 1,
-        spaceBetween: 10,
+        spaceBetween: 8, // Diperkecil dari 10
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
@@ -790,7 +808,7 @@
         if (isFilled) {
           if (!existingBadge) {
             const badge = document.createElement('span');
-            badge.className = 'badge-dinilai absolute top-2 right-2 text-xs bg-green-500 text-white px-2 py-1 rounded-full';
+            badge.className = 'badge-dinilai';
             badge.textContent = '✓';
             card.appendChild(badge);
           }
@@ -971,7 +989,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       initSliders();
       loadPenilai();
-      initStickyEffect(); // Inisialisasi efek sticky
+      initStickyEffect();
       document.getElementById('btnSubmit').disabled = true;
 
       // SUBMIT
