@@ -13,16 +13,16 @@
     
     /* PERKECIL UKURAN FORM 20% */
     .card { border:1px solid #111827; border-radius:.5rem; background:#fff; overflow:hidden; }
-    .card-header { background:#111827; color:#fff; padding:0.5rem 0.8rem; } /* Diperkecil dari 0.6/0.9 */
-    .card-sub { color:#94a3b8; font-size:.8rem; margin-top:.25rem; } /* Diperkecil */
-    .card-body { padding:0.6rem; } /* Diperkecil dari 0.8rem */
-    .lbl-small { font-size:.85rem; color:#0f172a; } /* Diperkecil */
-    .val-badge { min-width:40px; text-align:center; font-weight:600; color:#0f172a; font-size:0.9rem; } /* Diperkecil */
+    .card-header { background:#111827; color:#fff; padding:0.5rem 0.8rem; }
+    .card-sub { color:#94a3b8; font-size:.8rem; margin-top:.25rem; }
+    .card-body { padding:0.6rem; }
+    .lbl-small { font-size:.85rem; color:#0f172a; }
+    .val-badge { min-width:40px; text-align:center; font-weight:600; color:#0f172a; font-size:0.9rem; }
 
     input[type="range"] {
       -webkit-appearance: none;
       width: 100%;
-      height: 6px; /* Diperkecil dari 8px */
+      height: 6px;
       border-radius: 999px;
       background: linear-gradient(to right, #4285f4 var(--pos,50%), #e6e7e9 var(--pos,50%));
       outline: none;
@@ -31,8 +31,8 @@
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 16px; /* Diperkecil dari 18px */
-      height: 16px; /* Diperkecil dari 18px */
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: #4285f4;
       border: 2px solid white;
@@ -46,14 +46,14 @@
       background-color: #eff6ff;
       border-color: #3b82f6;
       border-width: 2px;
-      box-shadow: 0 5px 15px -5px rgba(59, 130, 246, 0.5); /* Diperkecil shadow */
+      box-shadow: 0 5px 15px -5px rgba(59, 130, 246, 0.5);
     }
 
     /* Indicator karyawan */
     .karyawan-indicator {
       display: inline-block;
-      width: 8px; /* Diperkecil dari 10px */
-      height: 8px; /* Diperkecil dari 10px */
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #94a3b8;
       margin: 0 2px;
@@ -77,27 +77,27 @@
       animation: pulse 1.5s ease-in-out infinite;
     }
 
-    /* Navigasi panah - diperkecil */
+    /* Navigasi panah */
     .karyawan-navigation {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px; /* Diperkecil dari 12px */
-      margin: 12px 0 4px; /* Diperkecil */
+      gap: 8px;
+      margin: 12px 0 4px;
     }
     
     .nav-arrow {
-      width: 36px; /* Diperkecil dari 44px */
-      height: 36px; /* Diperkecil dari 44px */
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: white;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Diperkecil shadow */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px; /* Diperkecil dari 24px */
+      font-size: 20px;
       color: #3b82f6;
       transition: all 0.2s;
       flex-shrink: 0;
@@ -109,11 +109,16 @@
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
 
+    .nav-arrow:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
     /* Container dengan partial visibility */
     .swiper-container-wrapper {
       position: relative;
       overflow: hidden;
-      border-radius: 10px; /* Diperkecil */
+      border-radius: 10px;
     }
     
     .swiper-container-wrapper::after {
@@ -122,7 +127,7 @@
       top: 0;
       right: 0;
       height: 100%;
-      width: 30px; /* Diperkecil dari 40px */
+      width: 30px;
       background: linear-gradient(to right, transparent, white);
       pointer-events: none;
       z-index: 5;
@@ -130,28 +135,38 @@
       border-radius: 0 10px 10px 0;
     }
 
-    /* Hint text - diperkecil */
+    /* Hilangkan gradient jika hanya 1 karyawan */
+    .swiper-container-wrapper.single-karyawan::after {
+      display: none;
+    }
+
+    /* Hint text */
     .swipe-hint {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px; /* Diperkecil */
+      gap: 6px;
       color: #64748b;
-      font-size: 12px; /* Diperkecil dari 13px */
-      margin: 4px 0 2px; /* Diperkecil */
+      font-size: 12px;
+      margin: 4px 0 2px;
     }
 
     .swipe-hint span {
-      font-size: 16px; /* Diperkecil dari 18px */
+      font-size: 16px;
       color: #3b82f6;
+    }
+
+    /* Sembunyikan hint jika hanya 1 karyawan */
+    .swipe-hint.single-karyawan {
+      display: none;
     }
 
     /* Card styling */
     .karyawan-card {
       position: relative;
-      transition: all 0.2s ease; /* Dipercepat */
+      transition: all 0.2s ease;
       border: 2px solid transparent;
-      padding: 0.8rem !important; /* Diperkecil dari 1rem */
+      padding: 0.8rem !important;
     }
 
     /* Badge centang */
@@ -159,28 +174,28 @@
       position: absolute;
       top: 4px;
       right: 4px;
-      font-size: 10px; /* Diperkecil */
+      font-size: 10px;
       background: #10b981;
       color: white;
-      padding: 2px 6px; /* Diperkecil */
+      padding: 2px 6px;
       border-radius: 999px;
     }
 
     /* STICKY SECTION */
     .sticky-karyawan {
       position: sticky;
-      top: 12px; /* Diperkecil dari 16px */
+      top: 12px;
       z-index: 40;
       transition: all 0.2s ease;
     }
 
     .sticky-karyawan.is-sticky {
-      box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1); /* Diperkecil shadow */
+      box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1);
     }
 
     /* Scroll margin */
     .scroll-margin {
-      scroll-margin-top: 70px; /* Diperkecil dari 80px */
+      scroll-margin-top: 70px;
     }
 
     /* HAPUS BULLET POINT */
@@ -190,41 +205,46 @@
       margin: 0;
     }
 
+    /* SEMBUNYIKAN PAGINATION DOTS */
+    .swiper-pagination {
+      display: none !important;
+    }
+
     /* Perkecil jarak antar section */
     .space-y-4 {
-      margin-top: 0.8rem !important; /* Diperkecil */
+      margin-top: 0.8rem !important;
     }
 
     .space-y-3 {
-      margin-top: 0.5rem !important; /* Diperkecil */
+      margin-top: 0.5rem !important;
     }
 
     .gap-3 {
-      gap: 0.5rem !important; /* Diperkecil */
+      gap: 0.5rem !important;
     }
 
     .p-4 {
-      padding: 0.8rem !important; /* Diperkecil dari 1rem */
+      padding: 0.8rem !important;
     }
 
     /* Perkecil teks di header card */
     .card-header .font-semibold {
-      font-size: 0.95rem; /* Diperkecil */
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
-  <div class="max-w-3xl mx-auto p-3 sm:p-4"> <!-- Diperkecil padding -->
-    <img src="https://media.licdn.com/dms/image/v2/D4E3DAQHdQ8hI0F8kFw/image-scale_191_1128/image-scale_191_1128/0/1729146506484/espera_satya_cover?e=2147483647&amp;v=beta&amp;t=Li35iFgVbilg53Our-rLWfp4cdXEVmF1ZzX6mRVCLfw" alt="Espera Satya" class="w-full h-28 object-cover object-right rounded-t-lg mb-2"> <!-- Diperkecil height dan margin -->
+  <div class="max-w-3xl mx-auto p-3 sm:p-4">
+    <img src="https://media.licdn.com/dms/image/v2/D4E3DAQHdQ8hI0F8kFw/image-scale_191_1128/image-scale_191_1128/0/1729146506484/espera_satya_cover?e=2147483647&amp;v=beta&amp;t=Li35iFgVbilg53Our-rLWfp4cdXEVmF1ZzX6mRVCLfw" alt="Espera Satya" class="w-full h-28 object-cover object-right rounded-t-lg mb-2">
 
-    <form id="formEval" class="space-y-3"> <!-- Diperkecil dari space-y-4 -->
+    <form id="formEval" class="space-y-3">
       <!-- PERIODE EVALUASI -->
       <section class="card">
         <div class="card-header">
           <div class="font-semibold">Periode Evaluasi</div>
         </div>
         <div class="card-body">
-          <select id="periode" name="periode" class="p-1.5 border rounded w-full md:w-1/2 text-sm" required> <!-- Diperkecil padding -->
+          <select id="periode" name="periode" class="p-1.5 border rounded w-full md:w-1/2 text-sm" required>
             <option value="">Pilih Periode Evaluasi *</option>
             <option value="CW1">November - Februari</option>
             <option value="CW2">Maret - Juni</option>
@@ -238,11 +258,11 @@
         <div class="card-header">
           <div class="font-semibold">Data Nama Penilai</div>
         </div>
-        <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-2"> <!-- Diperkecil gap -->
-          <select id="namaPenilai" name="namaPenilai" class="p-1.5 border rounded text-sm" required> <!-- Diperkecil padding -->
+        <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-2">
+          <select id="namaPenilai" name="namaPenilai" class="p-1.5 border rounded text-sm" required>
             <option value="">Pilih Nama Penilai *</option>
           </select>
-          <input id="departemen" name="departemen" placeholder="Departemen *" class="p-1.5 border rounded bg-gray-100 text-sm" readonly required> <!-- Diperkecil padding -->
+          <input id="departemen" name="departemen" placeholder="Departemen *" class="p-1.5 border rounded bg-gray-100 text-sm" readonly required>
         </div>
       </section>
 
@@ -251,16 +271,16 @@
         <div class="card-header">
           <div class="font-semibold">Data Karyawan</div>
           <div class="card-sub flex items-center gap-2" id="karyawanStatus">
-            <span id="karyawanCounter" class="text-xs">0 karyawan</span> <!-- Diperkecil -->
-            <span class="mx-1">|</span> <!-- Diperkecil margin -->
+            <span id="karyawanCounter" class="text-xs">0 karyawan</span>
+            <span class="mx-1">|</span>
             <span id="karyawanIndicator" class="flex gap-1"></span>
           </div>
         </div>
         <div class="card-body">
           <!-- AREA LOADING -->
-          <div id="loadingKaryawan" class="hidden flex flex-col items-center justify-center py-6"> <!-- Diperkecil padding -->
-            <div class="flex items-center gap-2 text-blue-600 font-medium text-base loading-pulse"> <!-- Diperkecil -->
-              <svg class="animate-spin h-4 w-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"> <!-- Diperkecil -->
+          <div id="loadingKaryawan" class="hidden flex flex-col items-center justify-center py-6">
+            <div class="flex items-center gap-2 text-blue-600 font-medium text-base loading-pulse">
+              <svg class="animate-spin h-4 w-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -270,10 +290,10 @@
 
           <div id="sectionKaryawan" class="hidden">
             <!-- Navigasi Panah + Swiper -->
-            <div class="karyawan-navigation">
+            <div class="karyawan-navigation" id="karyawanNavigation">
               <button type="button" class="nav-arrow" id="prevKaryawan" disabled>←</button>
               
-              <div class="swiper-container-wrapper flex-1">
+              <div class="swiper-container-wrapper flex-1" id="swiperWrapper">
                 <div class="swiper mySwiper">
                   <div class="swiper-wrapper" id="swiperKaryawan"></div>
                 </div>
@@ -282,17 +302,12 @@
               <button type="button" class="nav-arrow" id="nextKaryawan" disabled>→</button>
             </div>
 
-            <!-- Hint text - HAPUS BULLET, PAKAI TEKS BIASA -->
-            <div class="swipe-hint no-bullet">
+            <!-- Hint text - akan disembunyikan jika hanya 1 karyawan -->
+            <div class="swipe-hint no-bullet" id="swipeHint">
               <span>←</span> Geser atau klik panah untuk lihat karyawan lain <span>→</span>
             </div>
-
-            <!-- Pagination -->
-            <div class="swiper-pagination mt-1"></div> <!-- Diperkecil margin -->
           </div>
 
-          <!-- PESAN INI DIHAPUS - TIDAK ADA BULLET -->
-          <!-- <div id="noKaryawanMessage" class="hidden text-center py-4 text-gray-500 text-sm"> --> <!-- Diperkecil -->
           <div id="noKaryawanMessage" class="hidden text-center py-4 text-gray-500 text-sm">
             Tidak ada karyawan di departemen ini
           </div>
@@ -308,7 +323,7 @@
           <div class="font-semibold">KOMPETENSI</div>
           <div class="card-sub">&gt;15 = Tinggi | 9–15 = Sedang | &lt;9 = Rendah</div>
         </div>
-        <div class="card-body space-y-2"> <!-- Diperkecil dari space-y-3 -->
+        <div class="card-body space-y-2">
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">1. Keterampilan Kerja</label>
             <div class="sm:col-span-1">
@@ -339,7 +354,7 @@
           <div class="font-semibold">KAPASITAS</div>
           <div class="card-sub">&gt;15 = Kuat | 9–15 = Sedang | &lt;9 = Lemah</div>
         </div>
-        <div class="card-body space-y-2"> <!-- Diperkecil -->
+        <div class="card-body space-y-2">
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
             <label class="lbl-small">1. Fisik</label>
             <div class="sm:col-span-1"><input class="slider kapasitas w-full" type="range" name="kap1" min="0" max="20" value="0"></div>
@@ -359,10 +374,10 @@
           <div class="font-semibold">PROFESIONALISME KERJA</div>
           <div class="card-sub">&gt;40 = Sangat Baik | 30–40 = Baik | 19–29 = Sedang | &lt;19 = Kurang</div>
         </div>
-        <div class="card-body space-y-2"> <!-- Diperkecil -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center"> <!-- Diperkecil -->
+        <div class="card-body space-y-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">1. Pemahaman kebijakan mutu</label>
-            <div class="flex items-center gap-2"> <!-- Diperkecil -->
+            <div class="flex items-center gap-2">
               <input class="slider profesional flex-1" type="range" name="p1" min="0" max="50" value="0">
               <div class="val-badge" data-for="p1">0</div>
             </div>
@@ -430,9 +445,9 @@
       <section class="card scroll-margin">
         <div class="card-header">
           <div class="font-semibold">KARAKTER & KAPASITAS KERJA</div>
-          <div class="card-sub">&gt;30 = Sangat Baik | 20–30 = Baik | 9–19 = Sedang | &lt;9 = Kurang</div>
+          <div class="card-sub">&gt;30 = Sangat Baik | 20–30 = Baik | 9–19 = Sedang | &lt;19 = Kurang</div>
         </div>
-        <div class="card-body space-y-2"> <!-- Diperkecil -->
+        <div class="card-body space-y-2">
           <!-- 10 item dengan gap diperkecil -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
             <label class="lbl-small">1. Orientasi terhadap proses & hasil kerja</label>
@@ -508,7 +523,7 @@
       </section>
 
       <div class="text-right">
-        <button id="btnSubmit" type="submit" class="px-4 py-1.5 rounded bg-blue-500 text-white hover:bg-blue-600 disabled:bg-gray-400 text-sm" disabled>Submit</button> <!-- Diperkecil -->
+        <button id="btnSubmit" type="submit" class="px-4 py-1.5 rounded bg-blue-500 text-white hover:bg-blue-600 disabled:bg-gray-400 text-sm" disabled>Submit</button>
       </div>
     </form>
   </div>
@@ -519,7 +534,7 @@
     // ============ STATE MANAGEMENT ============
     let swiperInstance = null;
     let currentKaryawanList = [];
-    let penilaianState = {}; // Menyimpan nilai slider per karyawan
+    let penilaianState = {};
     
     // Daftar semua slider
     const SLIDER_NAMES = [
@@ -568,6 +583,44 @@
       });
     }
 
+    // ============ FUNGSI UNTUK MENYESUAIKAN TAMPILAN BERDASARKAN JUMLAH KARYAWAN ============
+    function adjustUIBasedOnCount() {
+      const count = currentKaryawanList.length;
+      const navArrows = document.getElementById('karyawanNavigation');
+      const swipeHint = document.getElementById('swipeHint');
+      const swiperWrapper = document.getElementById('swiperWrapper');
+      
+      if (count <= 1) {
+        // Sembunyikan panah dan hint
+        if (navArrows) {
+          const prevBtn = document.getElementById('prevKaryawan');
+          const nextBtn = document.getElementById('nextKaryawan');
+          if (prevBtn) prevBtn.style.display = 'none';
+          if (nextBtn) nextBtn.style.display = 'none';
+        }
+        if (swipeHint) {
+          swipeHint.classList.add('single-karyawan');
+        }
+        if (swiperWrapper) {
+          swiperWrapper.classList.add('single-karyawan');
+        }
+      } else {
+        // Tampilkan panah dan hint
+        if (navArrows) {
+          const prevBtn = document.getElementById('prevKaryawan');
+          const nextBtn = document.getElementById('nextKaryawan');
+          if (prevBtn) prevBtn.style.display = 'flex';
+          if (nextBtn) nextBtn.style.display = 'flex';
+        }
+        if (swipeHint) {
+          swipeHint.classList.remove('single-karyawan');
+        }
+        if (swiperWrapper) {
+          swiperWrapper.classList.remove('single-karyawan');
+        }
+      }
+    }
+
     // ============ LOAD KARYAWAN DENGAN LOADING REAL ============
     async function loadKaryawanByDept(dept) {
       if (!dept) return;
@@ -578,26 +631,20 @@
       const loadingEl = document.getElementById('loadingKaryawan');
       const counter = document.getElementById('karyawanCounter');
       
-      // 1. TAMPILKAN LOADING - sembunyikan yang lain
       section.classList.add('hidden');
       noMessage.classList.add('hidden');
       loadingEl.classList.remove('hidden');
-      wrapper.innerHTML = ''; // kosongkan wrapper
+      wrapper.innerHTML = '';
       counter.textContent = '0 karyawan';
-      document.getElementById('karyawanIndicator').innerHTML = ''; // kosongkan indicator
+      document.getElementById('karyawanIndicator').innerHTML = '';
       
-      // Disable tombol panah
       document.getElementById('prevKaryawan').disabled = true;
       document.getElementById('nextKaryawan').disabled = true;
       
-      // 2. FETCH DATA
       try {
         const data = await fetchFromGAS('getKaryawanByDept', { departemen: dept });
         
-        // 3. DATA TERIMA
         loadingEl.classList.add('hidden');
-        
-        // 4. Update data
         currentKaryawanList = data;
 
         data.forEach((karyawan) => {
@@ -619,11 +666,18 @@
           loadPenilaianForKaryawan(0);
           updateActiveKaryawan(0);
           
-          // Enable tombol panah jika perlu
-          document.getElementById('prevKaryawan').disabled = true;
-          document.getElementById('nextKaryawan').disabled = data.length <= 1;
+          // Sesuaikan UI berdasarkan jumlah karyawan
+          adjustUIBasedOnCount();
+          
+          // Enable tombol panah hanya jika lebih dari 1 karyawan
+          if (data.length > 1) {
+            document.getElementById('prevKaryawan').disabled = true;
+            document.getElementById('nextKaryawan').disabled = false;
+          } else {
+            document.getElementById('prevKaryawan').disabled = true;
+            document.getElementById('nextKaryawan').disabled = true;
+          }
         } else {
-          // Tidak ada karyawan
           noMessage.classList.remove('hidden');
           noMessage.textContent = 'Tidak ada karyawan di departemen ini';
           section.classList.add('hidden');
@@ -671,8 +725,8 @@
                data-nama="${k.nama}"
                data-jabatan="${k.jabatan}"
                data-index="${index}">
-            <div class="font-semibold text-base">${k.nama}</div> <!-- Diperkecil -->
-            <div class="text-xs text-gray-500">${k.jabatan}</div> <!-- Diperkecil -->
+            <div class="font-semibold text-base">${k.nama}</div>
+            <div class="text-xs text-gray-500">${k.jabatan}</div>
             ${isFilled ? '<span class="badge-dinilai">✓</span>' : ''}
           </div>
         `;
@@ -680,16 +734,12 @@
         wrapper.appendChild(slide);
       });
 
-      // Inisialisasi Swiper
       if (swiperInstance) swiperInstance.destroy(true, true);
       
       swiperInstance = new Swiper('.mySwiper', {
         slidesPerView: 1,
-        spaceBetween: 8, // Diperkecil dari 10
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
+        spaceBetween: 8,
+        // PAGINATION DIHAPUS - tidak ada lagi
         on: {
           slideChange: function() {
             const index = this.realIndex;
@@ -705,8 +755,10 @@
             updateActiveKaryawan(index);
             
             // Update tombol panah
-            document.getElementById('prevKaryawan').disabled = index === 0;
-            document.getElementById('nextKaryawan').disabled = index === currentKaryawanList.length - 1;
+            if (currentKaryawanList.length > 1) {
+              document.getElementById('prevKaryawan').disabled = index === 0;
+              document.getElementById('nextKaryawan').disabled = index === currentKaryawanList.length - 1;
+            }
           }
         }
       });
@@ -923,20 +975,17 @@
       const dept = opt?.dataset.departemen || '';
       document.getElementById('departemen').value = dept;
       
-      // Reset state
       penilaianState = {};
       currentKaryawanList = [];
       document.getElementById('nama').value = '';
       document.getElementById('posisi').value = '';
       document.getElementById('currentKaryawanIndex').value = '-1';
       
-      // Reset semua slider ke 0
       resetAllSlidersToZero();
 
       if (dept) {
         await loadKaryawanByDept(dept);
       } else {
-        // Sembunyikan loading jika tidak ada departemen
         document.getElementById('loadingKaryawan').classList.add('hidden');
         document.getElementById('sectionKaryawan').classList.add('hidden');
         document.getElementById('noKaryawanMessage').classList.remove('hidden');
@@ -946,35 +995,24 @@
       checkFormCompletion();
     });
 
-    // Event listener untuk tombol panah
     document.getElementById('prevKaryawan').addEventListener('click', () => {
-      if (swiperInstance) {
-        swiperInstance.slidePrev();
-      }
+      if (swiperInstance) swiperInstance.slidePrev();
     });
 
     document.getElementById('nextKaryawan').addEventListener('click', () => {
-      if (swiperInstance) {
-        swiperInstance.slideNext();
-      }
+      if (swiperInstance) swiperInstance.slideNext();
     });
 
-    // ============ STICKY EFFECT HANDLER ============
     function initStickyEffect() {
       const stickySection = document.getElementById('karyawanSection');
-      
       if (!stickySection) return;
       
-      // Gunakan Intersection Observer untuk mendeteksi ketika sticky aktif
       const observer = new IntersectionObserver(
         ([e]) => {
-          // Jika elemen sticky, tambahkan class is-sticky
           if (e.target.classList.contains('sticky-karyawan')) {
             if (e.intersectionRatio < 1) {
-              // Sedikit tidak terlihat (mulai sticky)
               e.target.classList.add('is-sticky');
             } else {
-              // Sepenuhnya terlihat
               e.target.classList.remove('is-sticky');
             }
           }
@@ -992,24 +1030,17 @@
       initStickyEffect();
       document.getElementById('btnSubmit').disabled = true;
 
-      // SUBMIT
       document.getElementById('formEval').addEventListener('submit', async e => {
         e.preventDefault();
         
         const currentIndex = parseInt(document.getElementById('currentKaryawanIndex').value);
-        if (currentIndex >= 0) {
-          savePenilaianForKaryawan(currentIndex);
-        }
+        if (currentIndex >= 0) savePenilaianForKaryawan(currentIndex);
         
         const v = validateForm();
         if (!v.ok) return alert(v.msg);
 
         const karyawan = currentKaryawanList[currentIndex];
-        
-        if (!karyawan) {
-          alert('Pilih karyawan terlebih dahulu');
-          return;
-        }
+        if (!karyawan) return alert('Pilih karyawan terlebih dahulu');
 
         const calc = calcAll();
         const payload = {
